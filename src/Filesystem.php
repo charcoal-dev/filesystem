@@ -51,4 +51,44 @@ class Filesystem
             );
         }
     }
+
+    /**
+     * Generates UTF byte order mark bytes while minding the endianness
+     * @param int $utf
+     * @param bool $littleEndian
+     * @return string
+     */
+    public static function BOM_Bytes(int $utf, bool $littleEndian): string
+    {
+        return match ($utf) {
+            8 => pack("C*", 0xEF, 0xBB, 0xBF),
+            16 => $littleEndian ? pack("C*", 0xFF, 0xFE) : pack("C*", 0xFE, 0xFF),
+            32 => $littleEndian ? pack("C*", 0xFF, 0xFE, 0x00, 0x00) : pack("C*", 0x00, 0x00, 0xFE, 0xFF),
+            default => throw new \InvalidArgumentException('Argument for UTF must be 8, 16 or 32')
+        };
+    }
+
+    /**
+     * Pass few bytes (~4) from beginning of a file to check if it contains UTF byte order mark
+     * @param string $sof
+     * @return int
+     */
+    public static function Check_BOM(string $sof): int
+    {
+        if (substr($sof, 0, 3) === static::BOM_Bytes(8, false)) {
+            return 8;
+        }
+
+        $sof2 = substr($sof, 0, 2);
+        if ($sof2 === static::BOM_Bytes(16, true) || $sof2 === static::BOM_Bytes(16, false)) {
+            return 16;
+        }
+
+        $sof4 = substr($sof, 0, 4);
+        if ($sof4 === static::BOM_Bytes(32, true) || $sof4 === static::BOM_Bytes(32, false)) {
+            return 32;
+        }
+
+        return 0;
+    }
 }
