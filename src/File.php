@@ -32,7 +32,7 @@ class File extends AbstractPath
     public function __construct(string $path)
     {
         parent::__construct($path);
-        if ($this->type !== PathType::DIRECTORY) {
+        if ($this->type !== PathType::FILE) {
             throw new FilesystemException(
                 FilesystemError::PATH_NOT_FILE,
                 "Cannot instantiate path as File object"
