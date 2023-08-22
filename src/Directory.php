@@ -90,8 +90,8 @@ class Directory extends AbstractPath
     public function getChild(string $pathToChild): Directory|File
     {
         return match ($this->contains($pathToChild)) {
-            PathType::DIRECTORY => new Directory($pathToChild),
-            PathType::FILE => new File($pathToChild),
+            PathType::DIRECTORY => new Directory($this->pathToChild($pathToChild)),
+            PathType::FILE => new File($this->pathToChild($pathToChild)),
             null => throw new FilesystemException(FilesystemError::PATH_NOT_EXISTS,
                 "No such file/directory exists in this directory"),
             default => throw new FilesystemException(FilesystemError::UNSUPPORTED_PATH,
