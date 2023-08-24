@@ -41,6 +41,7 @@ class File extends AbstractPath
     }
 
     /**
+     * Reads from file
      * @param int $offset
      * @param int|null $length
      * @return string
@@ -61,6 +62,7 @@ class File extends AbstractPath
     }
 
     /**
+     * Reads file to instance of Buffer instead of string
      * @param int $offset
      * @param int|null $length
      * @return \Charcoal\Buffers\Buffer
@@ -72,6 +74,7 @@ class File extends AbstractPath
     }
 
     /**
+     * Writes to this file
      * @param string|\Charcoal\Buffers\AbstractByteArray $buffer
      * @param bool $append
      * @param bool $lock
@@ -112,6 +115,7 @@ class File extends AbstractPath
     }
 
     /**
+     * Returns file size in bytes
      * @return int
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
