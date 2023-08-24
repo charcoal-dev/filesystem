@@ -68,6 +68,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Checks if child exists in directory, returns PathType enum
      * @param string $pathToChild
      * @return \Charcoal\Filesystem\PathType|null
      */
@@ -83,6 +84,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Gets an instance of Directory or File based on given path
      * @param string $pathToChild
      * @return \Charcoal\Filesystem\Directory|\Charcoal\Filesystem\File
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
@@ -100,6 +102,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Gets an Instance of File on child directory
      * @param string $pathToChild
      * @param bool $createIfNotExists
      * @return \Charcoal\Filesystem\File
@@ -121,6 +124,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Gets an instance of Directory on a child directory
      * @param string $pathToChild
      * @param bool $createIfNotExists
      * @return \Charcoal\Filesystem\Directory
@@ -140,6 +144,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Reads a file inside directory
      * @param string $fileName
      * @param int $offset
      * @param int|null $length
@@ -157,6 +162,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Same as readFile method but returns instance Buffer instead of string
      * @param string $fileName
      * @param int $offset
      * @param int|null $length
@@ -169,6 +175,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Writes to a file in directory, if it doesn't exist, creates one
      * @param string $fileName
      * @param string|\Charcoal\Buffers\AbstractByteArray $buffer
      * @param bool $append
@@ -196,6 +203,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Performs a "scan" in directory
      * @param bool $returnAbsolutePaths
      * @param int $sort
      * @return array
@@ -226,6 +234,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Performs "glob" in directory
      * @param string $pattern
      * @param bool $returnAbsolutePaths
      * @param int $flags
@@ -261,6 +270,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Creates a directory or multiple directories depending on given path argument
      * @param string $path
      * @param string $mode
      * @return \Charcoal\Filesystem\Directory
@@ -286,6 +296,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * changes CHMOD of a child file or directory
      * @param string $pathToChild
      * @param string $mode
      * @return void
@@ -303,6 +314,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Deletes itself or a child file or directory
      * @param string|null $pathToChild
      * @return void
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
@@ -396,6 +408,7 @@ class Directory extends AbstractPath
     }
 
     /**
+     * Returns directory size (including all files and subdirectories) in bytes
      * @return int
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
