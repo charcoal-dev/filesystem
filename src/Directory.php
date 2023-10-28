@@ -116,7 +116,7 @@ class Directory extends AbstractPath
             if ($createIfNotExists && $e->error === FilesystemError::PATH_NOT_EXISTS) {
                 $this->writeToFile($pathToChild, ""); // Create new blank file
                 Filesystem::ClearPathStatCache($this->pathToChild($pathToChild));
-                return new File($pathToChild);
+                return $this->getFile($pathToChild, false);
             }
 
             throw $e;
