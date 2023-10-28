@@ -111,7 +111,8 @@ class Directory extends AbstractPath
     public function getFile(string $pathToChild, bool $createIfNotExists = false): File
     {
         try {
-            return new File($this->pathToChild($pathToChild));
+            $pathToChild = $this->pathToChild($pathToChild);
+            return new File($pathToChild);
         } catch (FilesystemException $e) {
             if ($createIfNotExists && $e->error === FilesystemError::PATH_NOT_EXISTS) {
                 $this->writeToFile($pathToChild, ""); // Create new blank file
