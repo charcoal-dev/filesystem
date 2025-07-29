@@ -340,7 +340,7 @@ class Directory extends AbstractPath
                 return;
             }
 
-            if (!unlink($pathToChild)) {
+            if (!unlink($this->pathToChild($pathToChild))) {
                 throw new FilesystemException(
                     FilesystemError::IO_ERROR,
                     sprintf('Failed to delete file "%s"', basename($pathToChild)),
