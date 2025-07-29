@@ -330,7 +330,7 @@ class Directory extends AbstractPath
             $childType = $this->contains($pathToChild);
             if (!$childType) {
                 throw new FilesystemException(
-                    FilesystemError::IO_ERROR,
+                    FilesystemError::PATH_NOT_EXISTS,
                     "Cannot delete; Target file/sub-directory does not exist",
                 );
             }
