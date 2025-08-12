@@ -12,8 +12,11 @@
 
 declare(strict_types=1);
 
+namespace Charcoal\Filesystem\Tests;
+
 /**
  * Class FileTest
+ * @package Charcoal\Filesystem\Tests
  */
 class FileTest extends \PHPUnit\Framework\TestCase
 {

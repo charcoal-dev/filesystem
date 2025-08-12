@@ -12,8 +12,11 @@
 
 declare(strict_types=1);
 
+namespace Charcoal\Filesystem\Tests;
+
 /**
  * Class DirectoryTest
+ * @package Charcoal\Filesystem\Tests
  */
 class DirectoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -49,7 +52,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
     public function testGetNonExistingDirectory(): void
     {
         $dir = $this->getTestDirectory();
-        $this->expectExceptionCode(\Charcoal\Filesystem\Exception\FilesystemError::PATH_NOT_EXISTS->value);
+        $this->expectExceptionCode(\Charcoal\Filesystem\Enums\FilesystemError::PATH_NOT_EXISTS->value);
         $dir->getDirectory("this-should-not-work");
     }
 
@@ -71,7 +74,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
     public function testGetNonExistingFile(): void
     {
         $dir = $this->getTestDirectory();
-        $this->expectExceptionCode(\Charcoal\Filesystem\Exception\FilesystemError::PATH_NOT_EXISTS->value);
+        $this->expectExceptionCode(\Charcoal\Filesystem\Enums\FilesystemError::PATH_NOT_EXISTS->value);
         $dir->getFile("this-should-not-work");
     }
 
@@ -83,11 +86,11 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
     {
         $dir = $this->getTestDirectory();
         $child1 = $dir->contains("some-file-2");
-        $this->assertEquals(\Charcoal\Filesystem\PathType::FILE, $child1);
+        $this->assertEquals(\Charcoal\Filesystem\Enums\PathType::FILE, $child1);
         $child2 = $dir->contains("non-existent");
         $this->assertNull($child2);
         $child3 = $dir->contains("test-dir");
-        $this->assertEquals(\Charcoal\Filesystem\PathType::DIRECTORY, $child3);
+        $this->assertEquals(\Charcoal\Filesystem\Enums\PathType::DIRECTORY, $child3);
     }
 
     /**
