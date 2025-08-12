@@ -1,20 +1,14 @@
 <?php
-/*
- * This file is a part of "charcoal-dev/filesystem" package.
- * https://github.com/charcoal-dev/filesystem
- *
- * Copyright (c) Furqan A. Siddiqui <hello@furqansiddiqui.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code or visit following link:
- * https://github.com/charcoal-dev/filesystem/blob/master/LICENSE
+/**
+ * Part of the "charcoal-dev/filesystem" package.
+ * @link https://github.com/charcoal-dev/filesystem
  */
 
 declare(strict_types=1);
 
 namespace Charcoal\Filesystem;
 
-use Charcoal\Filesystem\Exception\FilesystemError;
+use Charcoal\Filesystem\Enums\FilesystemError;
 use Charcoal\Filesystem\Exception\FilesystemException;
 
 /**
@@ -33,10 +27,7 @@ class Filesystem
     }
 
     /**
-     * @param string $mode
-     * @param string $path
-     * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public static function Chmod(string $mode, string $path): void
     {
@@ -54,9 +45,6 @@ class Filesystem
 
     /**
      * Generates UTF byte order mark bytes while minding the endianness
-     * @param int $utf
-     * @param bool $littleEndian
-     * @return string
      */
     public static function BOM_Bytes(int $utf, bool $littleEndian): string
     {
@@ -69,9 +57,7 @@ class Filesystem
     }
 
     /**
-     * Pass few bytes (~4) from beginning of a file to check if it contains UTF byte order mark
-     * @param string $sof
-     * @return int
+     * Pass few bytes (~4) from the beginning of a file to check if it contains UTF byte order mark
      */
     public static function Check_BOM(string $sof): int
     {
