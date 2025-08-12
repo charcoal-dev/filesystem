@@ -1,20 +1,15 @@
 <?php
-/*
- * This file is a part of "charcoal-dev/filesystem" package.
- * https://github.com/charcoal-dev/filesystem
- *
- * Copyright (c) Furqan A. Siddiqui <hello@furqansiddiqui.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code or visit following link:
- * https://github.com/charcoal-dev/filesystem/blob/master/LICENSE
+/**
+ * Part of the "charcoal-dev/filesystem" package.
+ * @link https://github.com/charcoal-dev/filesystem
  */
 
 declare(strict_types=1);
 
 namespace Charcoal\Filesystem;
 
-use Charcoal\Filesystem\Exception\FilesystemError;
+use Charcoal\Filesystem\Enums\FilesystemError;
+use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exception\FilesystemException;
 
 /**
@@ -38,8 +33,7 @@ abstract class AbstractPath
     protected bool $deleted = false;
 
     /**
-     * @param string $path
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function __construct(string $path)
     {
@@ -62,8 +56,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @return $this
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function reload(): static
     {
@@ -78,9 +71,6 @@ abstract class AbstractPath
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function __debugInfo(): array
     {
         return [
@@ -91,8 +81,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @return $this
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function clearStatCache(): static
     {
@@ -104,7 +93,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return \Charcoal\Filesystem\Directory
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function parent(): Directory
@@ -112,9 +100,6 @@ abstract class AbstractPath
         return new Directory(dirname($this->path));
     }
 
-    /**
-     * @return int
-     */
     final public function size(): int
     {
         if (!is_int($this->size)) {
@@ -124,23 +109,15 @@ abstract class AbstractPath
         return $this->size;
     }
 
-    /**
-     * @return int
-     */
     abstract protected function findSizeInBytes(): int;
 
-    /**
-     * @return bool
-     */
     public function isDeleted(): bool
     {
         return $this->deleted;
     }
 
     /**
-     * @param bool $dirSuffix
-     * @return string
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     protected function pathIfExists(bool $dirSuffix = false): string
     {
@@ -159,8 +136,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @param string $mode
-     * @return void
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function chmod(string $mode): void
@@ -170,7 +145,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return bool
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function isReadable(): bool
@@ -179,7 +153,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return bool
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function isWritable(): bool
@@ -188,7 +161,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return bool
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function isExecutable(): bool
@@ -197,7 +169,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return int
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function modifiedOn(): int
@@ -211,7 +182,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return int
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function lastAccessOn(): int
@@ -225,7 +195,6 @@ abstract class AbstractPath
     }
 
     /**
-     * @return int
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function ctime(): int

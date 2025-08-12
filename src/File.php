@@ -1,13 +1,7 @@
 <?php
-/*
- * This file is a part of "charcoal-dev/filesystem" package.
- * https://github.com/charcoal-dev/filesystem
- *
- * Copyright (c) Furqan A. Siddiqui <hello@furqansiddiqui.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code or visit following link:
- * https://github.com/charcoal-dev/filesystem/blob/master/LICENSE
+/**
+ * Part of the "charcoal-dev/filesystem" package.
+ * @link https://github.com/charcoal-dev/filesystem
  */
 
 declare(strict_types=1);
@@ -16,7 +10,8 @@ namespace Charcoal\Filesystem;
 
 use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
-use Charcoal\Filesystem\Exception\FilesystemError;
+use Charcoal\Filesystem\Enums\FilesystemError;
+use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exception\FilesystemException;
 
 /**
@@ -26,8 +21,7 @@ use Charcoal\Filesystem\Exception\FilesystemException;
 class File extends AbstractPath
 {
     /**
-     * @param string $path
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function __construct(string $path)
     {
@@ -41,11 +35,7 @@ class File extends AbstractPath
     }
 
     /**
-     * Reads from file
-     * @param int $offset
-     * @param int|null $length
-     * @return string
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function read(int $offset = 0, ?int $length = null): string
     {
@@ -62,11 +52,7 @@ class File extends AbstractPath
     }
 
     /**
-     * Reads file to instance of Buffer instead of string
-     * @param int $offset
-     * @param int|null $length
-     * @return \Charcoal\Buffers\Buffer
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function readToBuffer(int $offset = 0, ?int $length = null): Buffer
     {
@@ -74,12 +60,7 @@ class File extends AbstractPath
     }
 
     /**
-     * Writes to this file
-     * @param string|\Charcoal\Buffers\AbstractByteArray $buffer
-     * @param bool $append
-     * @param bool $lock
-     * @return int
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function write(string|AbstractByteArray $buffer, bool $append, bool $lock): int
     {
@@ -100,10 +81,7 @@ class File extends AbstractPath
     }
 
     /**
-     * No permission check is made
-     * because to be able to delete a file, its parent's directory needs to be checked if writable
-     * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function delete(): void
     {
@@ -115,9 +93,7 @@ class File extends AbstractPath
     }
 
     /**
-     * Returns file size in bytes
-     * @return int
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     protected function findSizeInBytes(): int
     {

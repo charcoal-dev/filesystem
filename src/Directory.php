@@ -1,13 +1,7 @@
 <?php
-/*
- * This file is a part of "charcoal-dev/filesystem" package.
- * https://github.com/charcoal-dev/filesystem
- *
- * Copyright (c) Furqan A. Siddiqui <hello@furqansiddiqui.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code or visit following link:
- * https://github.com/charcoal-dev/filesystem/blob/master/LICENSE
+/**
+ * Part of the "charcoal-dev/filesystem" package.
+ * @link https://github.com/charcoal-dev/filesystem
  */
 
 declare(strict_types=1);
@@ -16,7 +10,8 @@ namespace Charcoal\Filesystem;
 
 use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
-use Charcoal\Filesystem\Exception\FilesystemError;
+use Charcoal\Filesystem\Enums\FilesystemError;
+use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exception\FilesystemException;
 
 /**
@@ -26,8 +21,6 @@ use Charcoal\Filesystem\Exception\FilesystemException;
 class Directory extends AbstractPath
 {
     /**
-     * @param string $path
-     * @param bool $childPathValidations
      * @throws \Charcoal\Filesystem\Exception\FilesystemException
      */
     public function __construct(
@@ -46,10 +39,7 @@ class Directory extends AbstractPath
 
     /**
      * Minor overhead from RegExp calls can be avoided by setting $validations to FALSE, but
-     * Always use $validations=TRUE whenever path is being supplied by dynamic variable/untrusted user input
-     * @param string $path
-     * @param bool $validations
-     * @return string
+     * Always use $validations=TRUE whenever a path is being supplied by dynamic variable/untrusted user input
      */
     public function pathToChild(string $path, ?bool $validations = null): string
     {
@@ -69,8 +59,6 @@ class Directory extends AbstractPath
 
     /**
      * Checks if child exists in directory, returns PathType enum
-     * @param string $pathToChild
-     * @return \Charcoal\Filesystem\PathType|null
      */
     public function contains(string $pathToChild): ?PathType
     {
@@ -84,10 +72,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Gets an instance of Directory or File based on given path
-     * @param string $pathToChild
-     * @return \Charcoal\Filesystem\Directory|\Charcoal\Filesystem\File
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function getChild(string $pathToChild): Directory|File
     {
@@ -102,11 +87,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Gets an Instance of File on child directory
-     * @param string $pathToChild
-     * @param bool $createIfNotExists
-     * @return \Charcoal\Filesystem\File
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function getFile(string $pathToChild, bool $createIfNotExists = false): File
     {
@@ -124,11 +105,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Gets an instance of Directory on a child directory
-     * @param string $pathToChild
-     * @param bool $createIfNotExists
-     * @return \Charcoal\Filesystem\Directory
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function getDirectory(string $pathToChild, bool $createIfNotExists = false): Directory
     {
@@ -144,12 +121,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Reads a file inside directory
-     * @param string $fileName
-     * @param int $offset
-     * @param int|null $length
-     * @return string
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function readFile(string $fileName, int $offset = 0, ?int $length = null): string
     {
@@ -162,12 +134,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Same as readFile method but returns instance Buffer instead of string
-     * @param string $fileName
-     * @param int $offset
-     * @param int|null $length
-     * @return \Charcoal\Buffers\Buffer
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function readFileToBuffer(string $fileName, int $offset = 0, ?int $length = null): Buffer
     {
@@ -175,13 +142,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Writes to a file in directory, if it doesn't exist, creates one
-     * @param string $fileName
-     * @param string|\Charcoal\Buffers\AbstractByteArray $buffer
-     * @param bool $append
-     * @param bool $lock
-     * @return int
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function writeToFile(
         string                   $fileName,
@@ -203,11 +164,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Performs a "scan" in directory
-     * @param bool $returnAbsolutePaths
-     * @param int $sort
-     * @return array
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function scan(bool $returnAbsolutePaths = false, int $sort = SCANDIR_SORT_NONE): array
     {
@@ -234,12 +191,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Performs "glob" in directory
-     * @param string $pattern
-     * @param bool $returnAbsolutePaths
-     * @param int $flags
-     * @return array
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function glob(string $pattern, bool $returnAbsolutePaths = false, int $flags = 0): array
     {
@@ -270,11 +222,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Creates a directory or multiple directories depending on given path argument
-     * @param string $path
-     * @param string $mode
-     * @return \Charcoal\Filesystem\Directory
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function createDirectories(string $path, string $mode = "0777"): Directory
     {
@@ -296,11 +244,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * changes CHMOD of a child file or directory
-     * @param string $pathToChild
-     * @param string $mode
-     * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function childChmod(string $pathToChild, string $mode = "0755"): void
     {
@@ -314,10 +258,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Deletes itself or a child file or directory
-     * @param string|null $pathToChild
-     * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function delete(?string $pathToChild = null): void
     {
@@ -361,10 +302,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Deletes all files and subdirectories inside this directory
-     * @param bool $ignoreFails If TRUE then keeps deleting files even if one of the files has failed to delete
-     * @return int
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     public function flush(bool $ignoreFails = false): int
     {
@@ -408,9 +346,7 @@ class Directory extends AbstractPath
     }
 
     /**
-     * Returns directory size (including all files and subdirectories) in bytes
-     * @return int
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws FilesystemException
      */
     protected function findSizeInBytes(): int
     {
