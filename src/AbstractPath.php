@@ -10,7 +10,7 @@ namespace Charcoal\Filesystem;
 
 use Charcoal\Filesystem\Enums\FilesystemError;
 use Charcoal\Filesystem\Enums\PathType;
-use Charcoal\Filesystem\Exception\FilesystemException;
+use Charcoal\Filesystem\Exceptions\FilesystemException;
 
 /**
  * Class AbstractPath
@@ -93,7 +93,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function parent(): Directory
     {
@@ -136,7 +136,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function chmod(string $mode): void
     {
@@ -145,7 +145,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function isReadable(): bool
     {
@@ -153,7 +153,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function isWritable(): bool
     {
@@ -161,7 +161,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function isExecutable(): bool
     {
@@ -169,7 +169,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function modifiedOn(): int
     {
@@ -182,7 +182,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function lastAccessOn(): int
     {
@@ -195,7 +195,7 @@ abstract class AbstractPath
     }
 
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function ctime(): int
     {

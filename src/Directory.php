@@ -12,7 +12,7 @@ use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
 use Charcoal\Filesystem\Enums\FilesystemError;
 use Charcoal\Filesystem\Enums\PathType;
-use Charcoal\Filesystem\Exception\FilesystemException;
+use Charcoal\Filesystem\Exceptions\FilesystemException;
 
 /**
  * Class Directory
@@ -21,7 +21,7 @@ use Charcoal\Filesystem\Exception\FilesystemException;
 class Directory extends AbstractPath
 {
     /**
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function __construct(
         string      $path,

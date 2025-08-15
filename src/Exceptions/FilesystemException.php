@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace Charcoal\Filesystem\Exception;
+namespace Charcoal\Filesystem\Exceptions;
 
 use Charcoal\Filesystem\Enums\FilesystemError;
 

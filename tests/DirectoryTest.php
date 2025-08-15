@@ -22,7 +22,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testGetChild(): void
     {
@@ -34,7 +34,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testChildDirectory(): void
     {
@@ -47,7 +47,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testGetNonExistingDirectory(): void
     {
@@ -58,7 +58,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testGetFile(): void
     {
@@ -69,7 +69,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testGetNonExistingFile(): void
     {
@@ -80,7 +80,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testContains(): void
     {
@@ -95,7 +95,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testReadFile(): void
     {
@@ -109,7 +109,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testReadChildDirFile(): void
     {
@@ -119,18 +119,18 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testNonExistingFile(): void
     {
         $dir = $this->getTestDirectory();
-        $this->expectException(\Charcoal\Filesystem\Exception\FilesystemException::class);
+        $this->expectException(\Charcoal\Filesystem\Exceptions\FilesystemException::class);
         $dir->readFile("this-should-not-exist");
     }
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testScan(): void
     {
@@ -145,7 +145,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
     /**
      * NOTE: windows returning absolute paths by default
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testGlob(): void
     {
@@ -158,7 +158,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testPermissions(): void
     {
@@ -170,7 +170,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testSize(): void
     {
@@ -182,7 +182,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return \Charcoal\Filesystem\Directory
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     private function getTestDirectory(): \Charcoal\Filesystem\Directory
     {

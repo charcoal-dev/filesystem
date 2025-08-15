@@ -12,7 +12,7 @@ use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
 use Charcoal\Filesystem\Enums\FilesystemError;
 use Charcoal\Filesystem\Enums\PathType;
-use Charcoal\Filesystem\Exception\FilesystemException;
+use Charcoal\Filesystem\Exceptions\FilesystemException;
 
 /**
  * Class File

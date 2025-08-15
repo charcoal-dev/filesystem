@@ -22,7 +22,7 @@ class FileTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testReadFile(): void
     {
@@ -36,7 +36,7 @@ class FileTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @return void
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     public function testFilesize(): void
     {
@@ -49,7 +49,7 @@ class FileTest extends \PHPUnit\Framework\TestCase
     /**
      * @param string $name
      * @return \Charcoal\Filesystem\File
-     * @throws \Charcoal\Filesystem\Exception\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
     private function getTestFile(string $name): \Charcoal\Filesystem\File
     {
