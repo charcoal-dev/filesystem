@@ -12,9 +12,12 @@ namespace Charcoal\Filesystem\Enums;
  * Class PathType
  * @package Charcoal\Filesystem
  */
-enum PathType: int
+enum PathType
 {
-    case FILE = 0x0a;
-    case DIRECTORY = 0x14;
-    case LINK = 0x1e;
+    case Unchecked;
+    case File;
+    case Directory;
+    case Link;
+    case Missing;
+    case Other;
 }
