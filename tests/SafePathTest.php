@@ -51,8 +51,10 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse($this->invalidPathExceptionToFalse("../var/log", $context), "parent traversal rejected");
 
         // Windows & Scheme given Unix context (should reject)
-        $this->assertFalse($this->invalidPathExceptionToFalse("C:\\Windows\\System32", $context), "windows path rejected in unix context");
-        $this->assertFalse($this->invalidPathExceptionToFalse("file:///etc/hosts", $context), "scheme path rejected in unix context");
+        $this->assertFalse($this->invalidPathExceptionToFalse("C:\\Windows\\System32", $context),
+            "windows path rejected in unix context");
+        $this->assertFalse($this->invalidPathExceptionToFalse("file:///etc/hosts", $context),
+            "scheme path rejected in unix context");
     }
 
     /**
@@ -63,17 +65,26 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
     {
         $context = PathContext::Windows;
 
-        $this->assertEquals("C:\\Windows\\System32", SafePath::for("C:\\Windows\\System32", $context)->path, "windows absolute with backslashes");
-        $this->assertEquals("C:\\Windows\\System32", SafePath::for("C:/Windows/System32", $context)->path, "windows absolute with forward slashes normalized");
+        $this->assertEquals("C:\\Windows\\System32", SafePath::for("C:\\Windows\\System32", $context)->path,
+            "windows absolute with backslashes");
+        $this->assertEquals("C:\\Windows\\System32", SafePath::for("C:/Windows/System32", $context)->path,
+            "windows absolute with forward slashes normalized");
         $this->assertEquals("foo\\bar", SafePath::for("foo\\bar\\", $context)->path, "trailing backslash removed");
-        $this->assertEquals("foo\\bar", SafePath::for("foo//bar", $context)->path, "double forward slashes collapsed and converted");
-        $this->assertEquals("server\\share\\file.txt", SafePath::for("\\\\server\\share\\file.txt", $context)->path, "UNC accepted but transformed to relative (by design right now)");
+        $this->assertEquals("foo\\bar", SafePath::for("foo//bar", $context)->path,
+            "double forward slashes collapsed and converted");
+        $this->assertEquals("server\\share\\file.txt", SafePath::for("\\\\server\\share\\file.txt", $context)->path,
+            "UNC accepted but transformed to relative (by design right now)");
 
-        $this->assertFalse($this->invalidPathExceptionToFalse("/", $context), "unix root rejected in windows context");
-        $this->assertFalse($this->invalidPathExceptionToFalse("C:", $context), "drive without slash rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("./foo", $context), "dot segment rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("../foo", $context), "parent traversal rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("file:///C:/Windows/System32", $context), "scheme path rejected in windows context");
+        $this->assertFalse($this->invalidPathExceptionToFalse("/", $context),
+            "unix root rejected in windows context");
+        $this->assertFalse($this->invalidPathExceptionToFalse("C:", $context),
+            "drive without slash rejected");
+        $this->assertFalse($this->invalidPathExceptionToFalse("./foo", $context),
+            "dot segment rejected");
+        $this->assertFalse($this->invalidPathExceptionToFalse("../foo", $context),
+            "parent traversal rejected");
+        $this->assertFalse($this->invalidPathExceptionToFalse("file:///C:/Windows/System32", $context),
+            "scheme path rejected in windows context");
     }
 
     /**
@@ -83,12 +94,20 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
     public function testSafePathScheme(): void
     {
         $context = PathContext::Scheme;
-        $this->assertEquals("file:///C:/Windows/System32", SafePath::for("file://C:/Windows/System32", $context)->path, "scheme + windows absolute OK");
-        $this->assertEquals("file:///etc/hosts", SafePath::for("file:///etc/hosts", $context)->path, "scheme + posix absolute keeps triple slash");
-        $this->assertFalse($this->invalidPathExceptionToFalse("file://var/log", $context), "relative after scheme rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("file://../etc/passwd", $context), "traversal after scheme rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("file://../etc/passwd", $context), "parent traversal under scheme rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("file://var/log", $context), "relative after scheme rejected (absolute required)");
-        $this->assertFalse($this->invalidPathExceptionToFalse("http://example.com/path", $context), "non-file schemes rejected");
+        $this->assertEquals("file:///C:/Windows/System32", SafePath::for("file://C:/Windows/System32", $context)->path,
+            "scheme + windows absolute OK");
+        $this->assertEquals("file:///etc/hosts", SafePath::for("file:///etc/hosts", $context)->path,
+            "scheme + posix absolute keeps triple slash");
+        $this->assertFalse($this->invalidPathExceptionToFalse("file://var/log", $context),
+            "relative after scheme rejected");
+        $this->assertFalse($this->invalidPathExceptionToFalse("file://../etc/passwd", $context),
+            "
+        traversal after scheme rejected");
+        $this->assertFalse($this->invalidPathExceptionToFalse("file://../etc/passwd", $context),
+            "parent traversal under scheme rejected");
+        $this->assertFalse($this->invalidPathExceptionToFalse("file://var/log", $context),
+            "relative after scheme rejected (absolute required)");
+        $this->assertFalse($this->invalidPathExceptionToFalse("http://example.com/path", $context),
+            "non-file schemes rejected");
     }
 }
