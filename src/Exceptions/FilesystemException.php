@@ -8,22 +8,11 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Exceptions;
 
-use Charcoal\Filesystem\Enums\FilesystemError;
-
 /**
  * Class FilesystemException
- * @package Charcoal\Filesystem\Exception
+ * @package Charcoal\Filesystem\Exceptions
  */
 class FilesystemException extends \Exception
 {
-    public function __construct(
-        public readonly FilesystemError $error,
-        string                          $message = "",
-        public readonly array           $data = [],
-        ?\Throwable                     $previous = null
-    )
-    {
-        parent::__construct($message, $this->error->value, $previous);
-    }
 }
 
