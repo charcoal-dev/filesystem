@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Charcoal\Filesystem\Node;
 
 use Charcoal\Filesystem\Enums\PathType;
-use Charcoal\Filesystem\Exceptions\InvalidPathTypeException;
+use Charcoal\Filesystem\Exceptions\PathTypeException;
 
 /**
  * Class PathStats
@@ -26,12 +26,12 @@ final readonly class PathStats
 
     /**
      * @param PathInfo $node
-     * @throws InvalidPathTypeException
+     * @throws PathTypeException
      */
     public function __construct(PathInfo $node)
     {
         if (!in_array($node->type, [PathType::Directory, PathType::File, PathType::Link])) {
-            throw new InvalidPathTypeException($node, "Path is not an existing file, directory or link");
+            throw new PathTypeException($node, "Path is not an existing file, directory or link");
         }
 
         [
