@@ -25,13 +25,13 @@ final readonly class PathStats
     public int $size;
 
     /**
-     * @param PathInfo $node
+     * @param PathInfo $path
      * @throws PathTypeException
      */
-    public function __construct(PathInfo $node)
+    public function __construct(PathInfo $path)
     {
-        if (!in_array($node->type, [PathType::Directory, PathType::File, PathType::Link])) {
-            throw new PathTypeException($node, "Path is not an existing file, directory or link");
+        if (!in_array($path->type, [PathType::Directory, PathType::File, PathType::Link])) {
+            throw new PathTypeException($path, "Path is not an existing file, directory or link");
         }
 
         [
@@ -41,6 +41,6 @@ final readonly class PathStats
             "atime" => $this->accessTime,
             "mtime" => $this->modifyTime,
             "ctime" => $this->changeTime,
-        ] = stat($node->path);
+        ] = stat($path->absolute);
     }
 }
