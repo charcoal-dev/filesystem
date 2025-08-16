@@ -1,0 +1,17 @@
+<?php
+/**
+ * Part of the "charcoal-dev/filesystem" package.
+ * @link https://github.com/charcoal-dev/filesystem
+ */
+
+declare(strict_types=1);
+
+namespace Charcoal\Filesystem\Exceptions;
+
+/**
+ * Class PermissionException
+ * @package Charcoal\Filesystem\Exceptions
+ */
+class PermissionException extends NodeOpException
+{
+}
