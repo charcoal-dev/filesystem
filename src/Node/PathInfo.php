@@ -19,7 +19,7 @@ use Charcoal\Filesystem\SafePath;
  */
 final readonly class PathInfo
 {
-    public string $path;
+    public string $absolute;
     public string $separator;
     public PathContext $context;
     public string $basename;
@@ -49,8 +49,8 @@ final readonly class PathInfo
             throw new InvalidPathException($absolute ?? "", "Path is not absolute");
         }
 
-        $this->path = $absolute;
-        $this->basename = basename($this->path);
+        $this->absolute = $absolute;
+        $this->basename = basename($this->absolute);
         $absolute = realpath($absolute);
         if (!$absolute) {
             $this->validated = $path instanceof SafePath;
@@ -63,14 +63,14 @@ final readonly class PathInfo
 
         $this->validated = true;
         $this->type = match (true) {
-            is_dir($this->path) => PathType::Directory,
-            is_file($this->path) => PathType::File,
-            is_link($this->path) => PathType::Link,
+            is_dir($this->absolute) => PathType::Directory,
+            is_file($this->absolute) => PathType::File,
+            is_link($this->absolute) => PathType::Link,
             default => PathType::Other
         };
 
-        $this->readable = is_readable($this->path);
-        $this->writable = is_writable($this->path);
-        $this->executable = is_executable($this->path);
+        $this->readable = is_readable($this->absolute);
+        $this->writable = is_writable($this->absolute);
+        $this->executable = is_executable($this->absolute);
     }
 }
