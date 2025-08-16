@@ -19,16 +19,14 @@ use Charcoal\Filesystem\Exceptions\InvalidPathException;
 final readonly class PathInfo
 {
     public string $path;
+    public string $separator;
+    public PathContext $context;
+    public string $basename;
     public bool $validated;
-
     public PathType $type;
     public bool $readable;
     public bool $writable;
     public bool $executable;
-
-    public string $basename;
-    public string $separator;
-    public PathContext $context;
 
     /**
      * @param SafePath|string $path
