@@ -37,7 +37,7 @@ final readonly class SafePath
         // Normalize path separators, trim whitespaces
         $path = trim(str_replace("\\", "/", $path));
         if (!$path) {
-            throw new InvalidPathException($path);
+            throw new InvalidPathException($path, "Path cannot be empty");
         }
 
         // Check if a given path is absolute, matching given OS/Scheme
@@ -49,7 +49,7 @@ final readonly class SafePath
         // Replace multiple separators with a single separator
         $path = preg_replace('/\/+/', "/", trim($path, "/"));
         if (!$path || !self::pathRegExp($path, $context)) {
-            throw new InvalidPathException($path);
+            throw new InvalidPathException($path, "Path is invalid");
         }
 
         // Replace path separators with OS/Scheme specific separator
