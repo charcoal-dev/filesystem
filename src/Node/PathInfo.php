@@ -6,11 +6,12 @@
 
 declare(strict_types=1);
 
-namespace Charcoal\Filesystem;
+namespace Charcoal\Filesystem\Node;
 
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
+use Charcoal\Filesystem\SafePath;
 
 /**
  * Class PathInfo
@@ -71,18 +72,5 @@ final readonly class PathInfo
         $this->readable = is_readable($this->path);
         $this->writable = is_writable($this->path);
         $this->executable = is_executable($this->path);
-    }
-
-    /**
-     * @return self
-     * @throws InvalidPathException
-     */
-    public function refresh(): self
-    {
-        if ($this->validated) {
-            Filesystem::ClearPathStatCache($this->path);
-        }
-
-        return new self($this->path);
     }
 }
