@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Exceptions;
 
+use Charcoal\Base\Support\ErrorHelper;
 use Charcoal\Filesystem\Node\AbstractNode;
-use http\Exception\RuntimeException;
 
 /**
  * Class NodeOpException
@@ -23,15 +23,7 @@ class NodeOpException extends FilesystemException
         bool                         $captureLastError = false,
     )
     {
-        if ($captureLastError) {
-            if ($error = error_get_last()) {
-                ["type" => $type, "message" => $errorStr, "file" => $file, "line" => $line] = $error;
-                if ($type && $errorStr) {
-                    $previous = new RuntimeException(
-                        sprintf("[%d] %s in %s@%d", $type, $errorStr, $file, $line));
-                }
-            }
-        }
-        parent::__construct($message, previous: $previous ?? null);
+        parent::__construct($message, previous: $captureLastError ?
+            ErrorHelper::lastErrorToRuntimeException() : null);
     }
 }
