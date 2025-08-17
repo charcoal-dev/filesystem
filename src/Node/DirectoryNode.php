@@ -158,7 +158,8 @@ class DirectoryNode extends AbstractNode
         }
 
         Filesystem::ClearPathStatCache($childPath->absolute);
-        return new FileNode($childPath);
+        Filesystem::ClearPathStatCache($childPath->parent);
+        return new FileNode(new PathInfo($childPath->absolute));
     }
 
     /**

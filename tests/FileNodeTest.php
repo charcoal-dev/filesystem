@@ -15,7 +15,7 @@ use Charcoal\Filesystem\Node\PathInfo;
  * Class FileTest
  * @package Charcoal\Filesystem\Tests
  */
-class FileTest extends \PHPUnit\Framework\TestCase
+class FileNodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return void

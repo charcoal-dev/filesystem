@@ -46,7 +46,6 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("var/log", SafePath::for("var/log/", $context)->path, "trailing slash removed");
         $this->assertEquals("foo/bar", SafePath::for("foo//bar", $context)->path, "collapses multiple slashes");
         $this->assertEquals(".env", SafePath::for(".env", $context)->path, "dotfile allowed");
-        $this->assertFalse($this->invalidPathExceptionToFalse("/", $context), "root-only is invalid");
         $this->assertFalse($this->invalidPathExceptionToFalse("./var/log", $context), "dot segment rejected");
         $this->assertFalse($this->invalidPathExceptionToFalse("../var/log", $context), "parent traversal rejected");
 

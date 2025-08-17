@@ -19,7 +19,7 @@ use Charcoal\Filesystem\Node\PathInfo;
  * Class DirectoryTest
  * @package Charcoal\Filesystem\Tests
  */
-class DirectoryTest extends \PHPUnit\Framework\TestCase
+class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return void
@@ -33,7 +33,7 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DirectoryNode::class, $dir->child("test-dir", true));
 
         $unitTestFile = new FileNode(new PathInfo(__FILE__));
-        $this->assertEquals("DirectoryTest.php", $unitTestFile->path->basename);
+        $this->assertEquals("DirectoryNodeTest.php", $unitTestFile->path->basename);
     }
 
     /**
@@ -176,6 +176,114 @@ class DirectoryTest extends \PHPUnit\Framework\TestCase
         $size = $dir->size();
         $this->assertIsInt($size);
         $this->assertTrue(($size > 0));
+    }
+
+    /**
+     * @return void
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\InvalidPathException
+     */
+    public function testChildPathInfoRelativeTrustedAndUntrusted(): void
+    {
+        $dir = $this->getTestDirectory();
+
+        // File (relative)
+        $piFileUntrusted = $dir->childPathInfo("some-file-2", false);
+        $this->assertEquals(PathType::File, $piFileUntrusted->type);
+        $this->assertEquals("some-file-2", $piFileUntrusted->basename);
+
+        $piFileTrusted = $dir->childPathInfo("some-file-2", true);
+        $this->assertEquals(PathType::File, $piFileTrusted->type);
+        $this->assertEquals("some-file-2", $piFileTrusted->basename);
+        $this->assertSame($piFileUntrusted->absolute, $piFileTrusted->absolute,
+            'Trusted/untrusted produce the same absolute path for sane relative input');
+
+        // Directory (relative)
+        $piDirUntrusted = $dir->childPathInfo("test-dir", false);
+        $this->assertEquals(PathType::Directory, $piDirUntrusted->type);
+
+        $piDirTrusted = $dir->childPathInfo("test-dir", true);
+        $this->assertEquals(PathType::Directory, $piDirTrusted->type);
+
+        // Missing (relative)
+        $missing = "missing-" . time();
+        $piMissingUntrusted = $dir->childPathInfo($missing, false);
+        $this->assertEquals(PathType::Missing, $piMissingUntrusted->type);
+
+        $piMissingTrusted = $dir->childPathInfo($missing, true);
+        $this->assertEquals(PathType::Missing, $piMissingTrusted->type);
+    }
+
+    /**
+     * @return void
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
+     * @throws \Charcoal\Filesystem\Exceptions\InvalidPathException
+     */
+    public function testChildPathInfoSanitizationAndTraversalDifferences(): void
+    {
+        $dir = $this->getTestDirectory();
+
+        // Dot-segment path: rejected when untrusted, resolved when trusted
+        try {
+            $dir->childPathInfo("test-dir/./some-file-3", false);
+            $this->fail('Expected InvalidPathException for untrusted path with dot-segment');
+        } catch (\Charcoal\Filesystem\Exceptions\InvalidPathException) {
+            $this->assertTrue(true);
+        }
+        $piDotTrusted = $dir->childPathInfo("test-dir/./some-file-3", true);
+        $this->assertEquals(PathType::File, $piDotTrusted->type);
+        $this->assertEquals("some-file-3", $piDotTrusted->basename);
+
+        // Parent-traversal: rejected when untrusted, resolved when trusted
+        try {
+            $dir->childPathInfo("../DirectoryNodeTest.php", false);
+            $this->fail('Expected InvalidPathException for untrusted parent-traversal');
+        } catch (\Charcoal\Filesystem\Exceptions\InvalidPathException) {
+            $this->assertTrue(true);
+        }
+        $piParentTrusted = $dir->childPathInfo("../DirectoryNodeTest.php", true);
+        $this->assertEquals(PathType::File, $piParentTrusted->type);
+        $this->assertEquals("DirectoryNodeTest.php", $piParentTrusted->basename);
+
+        // Absolute injection: rejected when untrusted, allowed (but likely Missing) when trusted
+        $absFile = $dir->path->absolute . DIRECTORY_SEPARATOR . "some-file-2";
+        try {
+            $dir->childPathInfo($absFile, false);
+            $this->fail('Expected InvalidPathException for untrusted absolute path');
+        } catch (\Charcoal\Filesystem\Exceptions\InvalidPathException) {
+            $this->assertTrue(true);
+        }
+
+        $piAbsTrusted = $dir->childPathInfo($absFile, true);
+        /** @noinspection PhpConditionAlreadyCheckedInspection */
+        $this->assertInstanceOf(PathInfo::class, $piAbsTrusted);
+        $this->assertEquals(PathType::Missing, $piAbsTrusted->type,
+            'Trusted absolute is concatenated, typically resulting in a non-existing path');
+    }
+
+    /**
+     * @return void
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
+     */
+    public function testChildPathInfoRejectsEmptyOrDotRegardlessOfTrust(): void
+    {
+        $dir = $this->getTestDirectory();
+
+        foreach ([false, true] as $trusted) {
+            try {
+                $dir->childPathInfo("", $trusted);
+                $this->fail('Expected InvalidPathException for empty child path');
+            } catch (\Charcoal\Filesystem\Exceptions\InvalidPathException) {
+                $this->assertTrue(true);
+            }
+
+            try {
+                $dir->childPathInfo(".", $trusted);
+                $this->fail('Expected InvalidPathException for "." child path');
+            } catch (\Charcoal\Filesystem\Exceptions\InvalidPathException) {
+                $this->assertTrue(true);
+            }
+        }
     }
 
     /**

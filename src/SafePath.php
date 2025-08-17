@@ -46,6 +46,10 @@ final readonly class SafePath
             throw new InvalidPathException($path, "Scheme path must be absolute");
         }
 
+        if ($path === "/" && PathContext::Unix === $context && $absolute) {
+            return new self($path, true, "/", $context);
+        }
+
         // Replace multiple separators with a single separator
         $path = preg_replace('/\/+/', "/", trim($path, "/"));
         if (!$path || !self::pathRegExp($path, $context)) {
