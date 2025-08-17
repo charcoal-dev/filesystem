@@ -16,13 +16,35 @@ use Charcoal\Filesystem\Filesystem;
  */
 abstract class AbstractNode
 {
-    protected ?PathStats $stats;
+    protected ?PathStats $stats = null;
+    protected ?DirectoryNode $parent = null;
 
+    /**
+     * @param PathInfo $path
+     */
     public function __construct(public readonly PathInfo $path)
     {
     }
 
+    /**
+     * @return int
+     */
     abstract public function size(): int;
+
+    /**
+     * @return DirectoryNode|null
+     * @throws \Charcoal\Filesystem\Exceptions\InvalidPathException
+     * @throws \Charcoal\Filesystem\Exceptions\PathNotFoundException
+     * @throws \Charcoal\Filesystem\Exceptions\PathTypeException
+     */
+    public function parent(): ?DirectoryNode
+    {
+        if (!isset($this->parent)) {
+            $this->parent = new DirectoryNode(new PathInfo(dirname($this->path->absolute)));
+        }
+
+        return $this->parent;
+    }
 
     /**
      * @return PathStats
@@ -54,7 +76,7 @@ abstract class AbstractNode
      */
     protected function clearStats(): void
     {
-        if($this->path->validated) {
+        if ($this->path->validated) {
             Filesystem::ClearPathStatCache($this->path->absolute);
         }
 
