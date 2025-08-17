@@ -63,9 +63,10 @@ class FileNode extends AbstractNode
             throw new PermissionException($this, "File is not readable");
         }
 
+        error_clear_last();
         $contents = @file_get_contents($this->path->absolute, false, null, $offset, $length);
         if ($contents === false) {
-            throw new NodeOpException($this, "Read file op failed");
+            throw new NodeOpException($this, "Read file op failed", captureLastError: true);
         }
 
         return $contents;
@@ -98,11 +99,12 @@ class FileNode extends AbstractNode
         }
 
         $flags = ($append ? FILE_APPEND : 0) | ($lock ? LOCK_EX : 0);
+        error_clear_last();
         $len = @file_put_contents($this->path->absolute,
             $buffer instanceof AbstractByteArray ? $buffer->raw() : $buffer,
             $flags);
         if (!is_int($len)) {
-            throw new NodeOpException($this, "Write file op failed");
+            throw new NodeOpException($this, "Write file op failed", captureLastError: true);
         }
 
         $this->clearStats();
