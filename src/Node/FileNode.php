@@ -12,6 +12,7 @@ use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\NodeOpException;
+use Charcoal\Filesystem\Exceptions\PathNotFoundException;
 use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Exceptions\PermissionException;
 
@@ -23,11 +24,16 @@ class FileNode extends AbstractNode
 {
     /**
      * @param PathInfo $path
+     * @throws PathNotFoundException
      * @throws PathTypeException
      */
     public function __construct(PathInfo $path)
     {
         parent::__construct($path);
+        if ($this->path->type === PathType::Missing) {
+            throw new PathNotFoundException($this->path, "No such file exists at given path");
+        }
+
         if ($this->path->type !== PathType::File) {
             throw new PathTypeException($this->path,
                 "Cannot instantiate path as FileNode object for " . $this->path->type->name);
@@ -101,8 +107,7 @@ class FileNode extends AbstractNode
         $flags = ($append ? FILE_APPEND : 0) | ($lock ? LOCK_EX : 0);
         error_clear_last();
         $len = @file_put_contents($this->path->absolute,
-            $buffer instanceof AbstractByteArray ? $buffer->raw() : $buffer,
-            $flags);
+            $buffer instanceof AbstractByteArray ? $buffer->raw() : $buffer, $flags);
         if (!is_int($len)) {
             throw new NodeOpException($this, "Write file op failed", captureLastError: true);
         }
