@@ -14,8 +14,8 @@ namespace Charcoal\Filesystem\Exceptions;
  */
 class InvalidPathException extends FilesystemException
 {
-    public function __construct(public readonly string $path, string $message)
+    public function __construct(public readonly string $path, string $message, \Throwable $previous = null)
     {
-        parent::__construct($message);
+        parent::__construct($message, previous: $previous);
     }
 }

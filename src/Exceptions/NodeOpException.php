@@ -21,9 +21,10 @@ class NodeOpException extends FilesystemException
         public readonly AbstractNode $node,
         string                       $message,
         bool                         $captureLastError = false,
+        ?\Throwable                  $previous = null
     )
     {
         parent::__construct($message, previous: $captureLastError ?
-            ErrorHelper::lastErrorToRuntimeException() : null);
+            ErrorHelper::lastErrorToRuntimeException() : $previous);
     }
 }
