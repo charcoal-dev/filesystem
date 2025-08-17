@@ -65,7 +65,7 @@ abstract class AbstractNode
     public function refresh(): static
     {
         if ($this->path->validated) {
-            Filesystem::ClearPathStatCache($this->path->absolute);
+            Filesystem::ClearPathStatCache($this->path->absolute, false);
         }
 
         return new static($this->path);
@@ -77,7 +77,7 @@ abstract class AbstractNode
     protected function clearStats(): void
     {
         if ($this->path->validated) {
-            Filesystem::ClearPathStatCache($this->path->absolute);
+            Filesystem::ClearPathStatCache($this->path->absolute, false);
         }
 
         $this->stats = null;

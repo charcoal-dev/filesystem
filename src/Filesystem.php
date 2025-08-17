@@ -33,11 +33,12 @@ class Filesystem
 
     /**
      * @param string|null $path
+     * @param bool $clear_realpath_cache
      * @return void
      */
-    public static function ClearPathStatCache(?string $path = null): void
+    public static function ClearPathStatCache(?string $path = null, bool $clear_realpath_cache = false): void
     {
-        clearstatcache(true, $path);
+        clearstatcache($clear_realpath_cache, $path);
     }
 
     /**

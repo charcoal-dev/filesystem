@@ -157,8 +157,8 @@ class DirectoryNode extends AbstractNode
             throw new NodeOpException($this, "Failed to create new file", captureLastError: true);
         }
 
-        Filesystem::ClearPathStatCache($childPath->absolute);
-        Filesystem::ClearPathStatCache($childPath->parent);
+        Filesystem::ClearPathStatCache($childPath->absolute, false);
+        Filesystem::ClearPathStatCache($childPath->parent, false);
         return new FileNode(new PathInfo($childPath->absolute));
     }
 
@@ -256,7 +256,7 @@ class DirectoryNode extends AbstractNode
             throw new NodeOpException($this, "Failed to create child directories", captureLastError: true);
         }
 
-        Filesystem::ClearPathStatCache($directories->absolute);
+        Filesystem::ClearPathStatCache($directories->absolute, clear_realpath_cache: true);
         return new static(new PathInfo($directories->absolute));
     }
 
@@ -312,6 +312,7 @@ class DirectoryNode extends AbstractNode
             throw new NodeOpException($this, "Failed to delete directory", captureLastError: true);
         }
 
+        Filesystem::ClearPathStatCache($this->path->absolute, clear_realpath_cache: true);
         throw new PathDeletedException($this->path);
     }
 
@@ -346,6 +347,7 @@ class DirectoryNode extends AbstractNode
                     }
                 }
 
+                Filesystem::ClearPathStatCache($path, clear_realpath_cache: true);
                 continue;
             }
 

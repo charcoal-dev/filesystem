@@ -89,12 +89,13 @@ final readonly class PathInfo
     }
 
     /**
+     * @param bool $clear_realpath_cache
      * @return void
      */
-    public function clearStatCache(): void
+    public function clearStatCache(bool $clear_realpath_cache = false): void
     {
         if ($this->validated) {
-            Filesystem::ClearPathStatCache($this->absolute);
+            Filesystem::ClearPathStatCache($this->absolute, $clear_realpath_cache);
         }
     }
 }
