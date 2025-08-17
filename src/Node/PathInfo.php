@@ -11,6 +11,7 @@ namespace Charcoal\Filesystem\Node;
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
+use Charcoal\Filesystem\Filesystem;
 use Charcoal\Filesystem\SafePath;
 
 /**
@@ -72,5 +73,15 @@ final readonly class PathInfo
         $this->readable = is_readable($this->absolute);
         $this->writable = is_writable($this->absolute);
         $this->executable = is_executable($this->absolute);
+    }
+
+    /**
+     * @return void
+     */
+    public function clearStatCache(): void
+    {
+        if ($this->validated) {
+            Filesystem::ClearPathStatCache($this->absolute);
+        }
     }
 }
