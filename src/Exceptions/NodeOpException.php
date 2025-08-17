@@ -9,6 +9,7 @@ declare(strict_types=1);
 namespace Charcoal\Filesystem\Exceptions;
 
 use Charcoal\Filesystem\Node\AbstractNode;
+use http\Exception\RuntimeException;
 
 /**
  * Class NodeOpException
@@ -16,8 +17,21 @@ use Charcoal\Filesystem\Node\AbstractNode;
  */
 class NodeOpException extends FilesystemException
 {
-    public function __construct(public readonly AbstractNode $node, string $message)
+    public function __construct(
+        public readonly AbstractNode $node,
+        string                       $message,
+        bool                         $captureLastError = false,
+    )
     {
-        parent::__construct($message);
+        if ($captureLastError) {
+            if ($error = error_get_last()) {
+                ["type" => $type, "message" => $errorStr, "file" => $file, "line" => $line] = $error;
+                if ($type && $errorStr) {
+                    $previous = new RuntimeException(
+                        sprintf("[%d] %s in %s@%d", $type, $errorStr, $file, $line));
+                }
+            }
+        }
+        parent::__construct($message, previous: $previous ?? null);
     }
 }
