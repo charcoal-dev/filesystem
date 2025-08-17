@@ -12,6 +12,7 @@ use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\NodeOpException;
+use Charcoal\Filesystem\Exceptions\PathDeletedException;
 use Charcoal\Filesystem\Exceptions\PathNotFoundException;
 use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Exceptions\PermissionException;
@@ -23,7 +24,6 @@ use Charcoal\Filesystem\Exceptions\PermissionException;
 class FileNode extends AbstractNode
 {
     /**
-     * @param PathInfo $path
      * @throws PathNotFoundException
      * @throws PathTypeException
      */
@@ -53,9 +53,6 @@ class FileNode extends AbstractNode
     }
 
     /**
-     * @param int $offset
-     * @param int|null $length
-     * @return string
      * @throws NodeOpException
      * @throws PermissionException
      */
@@ -91,10 +88,6 @@ class FileNode extends AbstractNode
     }
 
     /**
-     * @param string|AbstractByteArray $buffer
-     * @param bool $append
-     * @param bool $lock
-     * @return $this
      * @throws NodeOpException
      * @throws PermissionException
      */
@@ -114,5 +107,24 @@ class FileNode extends AbstractNode
 
         $this->clearStats();
         return $this;
+    }
+
+    /**
+     * @throws NodeOpException
+     * @throws PathDeletedException <= On Success
+     * @throws PermissionException
+     */
+    public function deleteSelf(): never
+    {
+        if (!$this->path->writable) {
+            throw new PermissionException($this, "File is not writable");
+        }
+
+        error_clear_last();
+        if (!@unlink($this->path->absolute . $this->path->separator)) {
+            throw new NodeOpException($this, "Failed to delete file", captureLastError: true);
+        }
+
+        throw new PathDeletedException($this->path);
     }
 }
