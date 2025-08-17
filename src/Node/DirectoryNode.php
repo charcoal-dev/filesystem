@@ -19,7 +19,9 @@ use Charcoal\Filesystem\Exceptions\PathNotFoundException;
 use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Exceptions\PermissionException;
 use Charcoal\Filesystem\Filesystem;
-use Charcoal\Filesystem\SafePath;
+use Charcoal\Filesystem\Path\DirectoryPath;
+use Charcoal\Filesystem\Path\PathInfo;
+use Charcoal\Filesystem\Path\SafePath;
 
 /**
  * Class DirectoryNode
@@ -31,14 +33,14 @@ class DirectoryNode extends AbstractNode
      * @throws PathNotFoundException
      * @throws PathTypeException
      */
-    public function __construct(PathInfo $path)
+    public function __construct(DirectoryPath|PathInfo $path)
     {
         parent::__construct($path);
         if ($this->path->type === PathType::Missing) {
             throw new PathNotFoundException($this->path, "No such directory exists at given path");
         }
 
-        if ($this->path->type !== PathType::Directory) {
+        if (!$path instanceof DirectoryPath || $this->path->type !== PathType::Directory) {
             throw new PathTypeException($this->path,
                 "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
                 " object for " . $this->path->type->name);
@@ -62,7 +64,7 @@ class DirectoryNode extends AbstractNode
             }
         }
 
-        return new PathInfo($this->path->absolute . $this->path->separator . $path);
+        return new PathInfo($this->path->absolute . $this->separator . $path);
     }
 
     /**
@@ -158,7 +160,7 @@ class DirectoryNode extends AbstractNode
         }
 
         Filesystem::ClearPathStatCache($childPath->absolute, false);
-        Filesystem::ClearPathStatCache($childPath->parent, false);
+        Filesystem::ClearPathStatCache(dirname($childPath->absolute), false);
         return new FileNode(new PathInfo($childPath->absolute));
     }
 
@@ -173,7 +175,7 @@ class DirectoryNode extends AbstractNode
             throw new PermissionException($this, "Directory is not readable");
         }
 
-        $directoryPath = $this->path->absolute . $this->path->separator;
+        $directoryPath = $this->path->absolute . $this->separator;
         $final = [];
         error_clear_last();
         $scan = @scandir($directoryPath, $sort);
@@ -207,7 +209,7 @@ class DirectoryNode extends AbstractNode
             throw new \InvalidArgumentException('Unacceptable glob pattern');
         }
 
-        $directoryPath = $this->path->absolute . $this->path->separator;
+        $directoryPath = $this->path->absolute . $this->separator;
         $final = [];
         error_clear_last();
         $glob = @glob($directoryPath . $pattern, $flags);
@@ -308,7 +310,7 @@ class DirectoryNode extends AbstractNode
 
         $this->flush(false);
         error_clear_last();
-        if (!@rmdir($this->path->absolute . $this->path->separator)) {
+        if (!@rmdir($this->path->absolute . $this->separator)) {
             throw new NodeOpException($this, "Failed to delete directory", captureLastError: true);
         }
 

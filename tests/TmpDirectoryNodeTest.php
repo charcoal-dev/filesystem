@@ -13,7 +13,7 @@ use Charcoal\Filesystem\Exceptions\PathDeletedException;
 use Charcoal\Filesystem\Exceptions\PathNotFoundException;
 use Charcoal\Filesystem\Node\DirectoryNode;
 use Charcoal\Filesystem\Node\FileNode;
-use Charcoal\Filesystem\Node\PathInfo;
+use Charcoal\Filesystem\Path\PathInfo;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -60,7 +60,7 @@ final class TmpDirectoryNodeTest extends TestCase
         $created = $root->file($missingFile, false, true);
         /** @noinspection PhpConditionAlreadyCheckedInspection */
         $this->assertInstanceOf(FileNode::class, $created);
-        $this->assertSame($missingFile, $created->path->basename);
+        $this->assertSame($missingFile, basename($missingFile));
 
         $payload = "hello-$ts";
         $created->write($payload, append: false, lock: true);

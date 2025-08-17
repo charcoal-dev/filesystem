@@ -9,7 +9,7 @@ declare(strict_types=1);
 namespace Charcoal\Filesystem\Tests;
 
 use Charcoal\Filesystem\Node\FileNode;
-use Charcoal\Filesystem\Node\PathInfo;
+use Charcoal\Filesystem\Path\PathInfo;
 
 /**
  * Class FileTest

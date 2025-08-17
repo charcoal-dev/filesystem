@@ -13,7 +13,7 @@ use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\PathNotFoundException;
 use Charcoal\Filesystem\Node\DirectoryNode;
 use Charcoal\Filesystem\Node\FileNode;
-use Charcoal\Filesystem\Node\PathInfo;
+use Charcoal\Filesystem\Path\PathInfo;
 
 /**
  * Class DirectoryTest
@@ -33,7 +33,7 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(DirectoryNode::class, $dir->child("test-dir", true));
 
         $unitTestFile = new FileNode(new PathInfo(__FILE__));
-        $this->assertEquals("DirectoryNodeTest.php", $unitTestFile->path->basename);
+        $this->assertEquals("DirectoryNodeTest.php", basename($unitTestFile->path->absolute));
     }
 
     /**
@@ -69,7 +69,7 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         $dir = $this->getTestDirectory();
         $file2 = $dir->file("some-file-2", false);
         $this->assertEquals(PathType::File, $file2->path->type);
-        $this->assertEquals("some-file-2", $file2->path->basename);
+        $this->assertEquals("some-file-2", basename($file2->path->absolute));
     }
 
     /**
@@ -190,11 +190,11 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         // File (relative)
         $piFileUntrusted = $dir->childPathInfo("some-file-2", false);
         $this->assertEquals(PathType::File, $piFileUntrusted->type);
-        $this->assertEquals("some-file-2", $piFileUntrusted->basename);
+        $this->assertEquals("some-file-2", basename($piFileUntrusted->absolute));
 
         $piFileTrusted = $dir->childPathInfo("some-file-2", true);
         $this->assertEquals(PathType::File, $piFileTrusted->type);
-        $this->assertEquals("some-file-2", $piFileTrusted->basename);
+        $this->assertEquals("some-file-2", basename($piFileTrusted->absolute));
         $this->assertSame($piFileUntrusted->absolute, $piFileTrusted->absolute,
             'Trusted/untrusted produce the same absolute path for sane relative input');
 
@@ -232,7 +232,7 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         }
         $piDotTrusted = $dir->childPathInfo("test-dir/./some-file-3", true);
         $this->assertEquals(PathType::File, $piDotTrusted->type);
-        $this->assertEquals("some-file-3", $piDotTrusted->basename);
+        $this->assertEquals("some-file-3", basename($piDotTrusted->absolute));
 
         // Parent-traversal: rejected when untrusted, resolved when trusted
         try {
@@ -243,7 +243,7 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         }
         $piParentTrusted = $dir->childPathInfo("../DirectoryNodeTest.php", true);
         $this->assertEquals(PathType::File, $piParentTrusted->type);
-        $this->assertEquals("DirectoryNodeTest.php", $piParentTrusted->basename);
+        $this->assertEquals("DirectoryNodeTest.php", basename($piParentTrusted->absolute));
 
         // Absolute injection: rejected when untrusted, allowed (but likely Missing) when trusted
         $absFile = $dir->path->absolute . DIRECTORY_SEPARATOR . "some-file-2";

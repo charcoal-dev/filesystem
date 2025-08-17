@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Exceptions;
 
-use Charcoal\Filesystem\Node\PathInfo;
+use Charcoal\Filesystem\Path\PathInfo;
 
 /**
  * Class PathDeletedException

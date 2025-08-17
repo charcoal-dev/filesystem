@@ -6,31 +6,27 @@
 
 declare(strict_types=1);
 
-namespace Charcoal\Filesystem\Node;
+namespace Charcoal\Filesystem\Path;
 
 use Charcoal\Base\Support\ErrorHelper;
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
 use Charcoal\Filesystem\Filesystem;
-use Charcoal\Filesystem\SafePath;
 
 /**
  * Class PathInfo
- * @package Charcoal\Filesystem
+ * @package Charcoal\Filesystem\Path
  */
-final readonly class PathInfo
+readonly class PathInfo
 {
-    public string $absolute;
-    public string $separator;
     public PathContext $context;
-    public string $basename;
+    public string $absolute;
     public bool $validated;
     public PathType $type;
     public bool $readable;
     public bool $writable;
     public bool $executable;
-    public string $parent;
 
     /**
      * @param SafePath|string $path
@@ -39,11 +35,9 @@ final readonly class PathInfo
     public function __construct(SafePath|string $path)
     {
         if (is_string($path)) {
-            $this->separator = DIRECTORY_SEPARATOR;
-            $this->context = $this->separator === "\\" ? PathContext::Windows : PathContext::Unix;
+            $this->context = DIRECTORY_SEPARATOR === "\\" ? PathContext::Windows : PathContext::Unix;
             $absolute = $path;
         } else {
-            $this->separator = $path->separator;
             $this->context = $path->context;
             $absolute = $path->absolute ? $path->path : null;
         }
@@ -53,8 +47,6 @@ final readonly class PathInfo
         }
 
         $this->absolute = $absolute;
-        $this->basename = basename($this->absolute);
-        $this->parent = dirname($this->absolute);
         $absolute = realpath($absolute);
         if (!$absolute) {
             $this->validated = $path instanceof SafePath;

@@ -17,6 +17,8 @@ use Charcoal\Filesystem\Exceptions\PathDeletedException;
 use Charcoal\Filesystem\Exceptions\PathNotFoundException;
 use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Exceptions\PermissionException;
+use Charcoal\Filesystem\Path\FilePath;
+use Charcoal\Filesystem\Path\PathInfo;
 
 /**
  * Class File
@@ -28,14 +30,14 @@ class FileNode extends AbstractNode
      * @throws PathNotFoundException
      * @throws PathTypeException
      */
-    public function __construct(PathInfo $path)
+    public function __construct(FilePath|PathInfo $path)
     {
         parent::__construct($path);
         if ($this->path->type === PathType::Missing) {
             throw new PathNotFoundException($this->path, "No such file exists at given path");
         }
 
-        if ($this->path->type !== PathType::File) {
+        if (!$path instanceof FilePath || $this->path->type !== PathType::File) {
             throw new PathTypeException($this->path,
                 "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
                 " object for " . $this->path->type->name);
@@ -120,7 +122,7 @@ class FileNode extends AbstractNode
     public function deleteSelf(): never
     {
         error_clear_last();
-        if (!@is_writable($this->path->parent)) {
+        if (!@is_writable(dirname($this->path->absolute))) {
             throw new PermissionException($this, "File parent directory is not writable", captureLastError: true);
         }
 

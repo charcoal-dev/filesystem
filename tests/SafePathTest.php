@@ -10,7 +10,7 @@ namespace Charcoal\Filesystem\Tests;
 
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
-use Charcoal\Filesystem\SafePath;
+use Charcoal\Filesystem\Path\SafePath;
 
 /**
  * Class SafePathTest

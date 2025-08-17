@@ -6,14 +6,15 @@
 
 declare(strict_types=1);
 
-namespace Charcoal\Filesystem\Node;
+namespace Charcoal\Filesystem\Stats;
 
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\PathTypeException;
+use Charcoal\Filesystem\Path\PathInfo;
 
 /**
  * Class PathStats
- * @package Charcoal\Filesystem\Node
+ * @package Charcoal\Filesystem\Stats
  */
 final readonly class PathStats
 {

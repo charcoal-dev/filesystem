@@ -8,7 +8,10 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Node;
 
+use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Filesystem;
+use Charcoal\Filesystem\Path\PathInfo;
+use Charcoal\Filesystem\Stats\PathStats;
 
 /**
  * Class AbstractNode
@@ -16,6 +19,7 @@ use Charcoal\Filesystem\Filesystem;
  */
 abstract class AbstractNode
 {
+    protected readonly string $separator;
     protected ?PathStats $stats = null;
     protected ?DirectoryNode $parent = null;
 
@@ -24,6 +28,7 @@ abstract class AbstractNode
      */
     public function __construct(public readonly PathInfo $path)
     {
+        $this->separator = $this->path->context === PathContext::Windows ? "\\" : "/";
     }
 
     /**

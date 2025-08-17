@@ -6,14 +6,14 @@
 
 declare(strict_types=1);
 
-namespace Charcoal\Filesystem;
+namespace Charcoal\Filesystem\Path;
 
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
 
 /**
- * Class PathInfo
- * @package Charcoal\Filesystem
+ * Class SafePath
+ * @package Charcoal\Filesystem\Path
  */
 final readonly class SafePath
 {

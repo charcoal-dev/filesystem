@@ -10,6 +10,7 @@ namespace Charcoal\Filesystem;
 
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
+use Charcoal\Filesystem\Path\SafePath;
 
 /**
  * Class Filesystem
