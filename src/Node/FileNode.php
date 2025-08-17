@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Node;
 
+use Charcoal\Base\Support\Helpers\ObjectHelper;
 use Charcoal\Buffers\AbstractByteArray;
 use Charcoal\Buffers\Buffer;
 use Charcoal\Filesystem\Enums\PathType;
@@ -36,7 +37,8 @@ class FileNode extends AbstractNode
 
         if ($this->path->type !== PathType::File) {
             throw new PathTypeException($this->path,
-                "Cannot instantiate path as FileNode object for " . $this->path->type->name);
+                "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
+                " object for " . $this->path->type->name);
         }
     }
 
@@ -56,10 +58,10 @@ class FileNode extends AbstractNode
      * @throws NodeOpException
      * @throws PermissionException
      */
-    public function read(int $offset = 0, ?int $length = null): string
+    public function read(int $offset = 0, ?int $length = null, ?Buffer $buffer = null): string
     {
         if ($offset < 0) {
-            throw new \InvalidArgumentException("Offset must be positive for FileNode::read");
+            throw new \InvalidArgumentException("Offset must be positive for read operation");
         }
 
         if (!$this->path->readable) {
@@ -72,6 +74,7 @@ class FileNode extends AbstractNode
             throw new NodeOpException($this, "Read file op failed", captureLastError: true);
         }
 
+        $buffer?->append($contents);
         return $contents;
     }
 
@@ -116,12 +119,13 @@ class FileNode extends AbstractNode
      */
     public function deleteSelf(): never
     {
-        if (!$this->path->writable) {
-            throw new PermissionException($this, "File is not writable");
+        error_clear_last();
+        if (!@is_writable($this->path->parent)) {
+            throw new PermissionException($this, "File parent directory is not writable", captureLastError: true);
         }
 
         error_clear_last();
-        if (!@unlink($this->path->absolute . $this->path->separator)) {
+        if (!@unlink($this->path->absolute)) {
             throw new NodeOpException($this, "Failed to delete file", captureLastError: true);
         }
 

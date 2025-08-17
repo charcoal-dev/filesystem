@@ -1,18 +1,15 @@
 <?php
-/*
- * This file is a part of "charcoal-dev/filesystem" package.
- * https://github.com/charcoal-dev/filesystem
- *
- * Copyright (c) Furqan A. Siddiqui <hello@furqansiddiqui.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code or visit following link:
- * https://github.com/charcoal-dev/filesystem/blob/master/LICENSE
+/**
+ * Part of the "charcoal-dev/filesystem" package.
+ * @link https://github.com/charcoal-dev/filesystem
  */
 
 declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Tests;
+
+use Charcoal\Filesystem\Node\FileNode;
+use Charcoal\Filesystem\Node\PathInfo;
 
 /**
  * Class FileTest
@@ -48,11 +45,12 @@ class FileTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @param string $name
-     * @return \Charcoal\Filesystem\File
+     * @return \Charcoal\Filesystem\Node\FileNode
      * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
      */
-    private function getTestFile(string $name): \Charcoal\Filesystem\File
+    private function getTestFile(string $name): \Charcoal\Filesystem\Node\FileNode
     {
-        return new \Charcoal\Filesystem\File(__DIR__ . DIRECTORY_SEPARATOR . "data" . DIRECTORY_SEPARATOR . $name);
+        return new FileNode(new PathInfo(__DIR__ . DIRECTORY_SEPARATOR .
+                "data" . DIRECTORY_SEPARATOR . $name));
     }
 }

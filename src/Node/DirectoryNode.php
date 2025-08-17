@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Node;
 
+use Charcoal\Base\Support\Helpers\ObjectHelper;
+use Charcoal\Buffers\Buffer;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\FilesystemException;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
@@ -38,7 +40,8 @@ class DirectoryNode extends AbstractNode
 
         if ($this->path->type !== PathType::Directory) {
             throw new PathTypeException($this->path,
-                "Cannot instantiate path as DirectoryNode object for " . $this->path->type->name);
+                "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
+                " object for " . $this->path->type->name);
         }
     }
 
@@ -67,12 +70,13 @@ class DirectoryNode extends AbstractNode
      * @throws PathNotFoundException
      * @throws PathTypeException
      */
-    public function getChild(string $path, bool $pathIsTrusted): DirectoryNode|FileNode
+    public function child(string $path, bool $pathIsTrusted): DirectoryNode|FileNode
     {
         $path = $this->childPathInfo($path, $pathIsTrusted);
-        return match ($this->path->type) {
+        return match ($path->type) {
             PathType::File => new FileNode($path),
             PathType::Directory => new DirectoryNode($path),
+            PathType::Missing => throw new PathNotFoundException($path, "Path does not exist"),
             default => throw new PathTypeException($path, "Unsupported path type"),
         };
     }
@@ -84,7 +88,7 @@ class DirectoryNode extends AbstractNode
      * @throws PathTypeException
      * @throws PermissionException
      */
-    public function getFile(string $path, bool $pathIsTrusted, bool $createIfNotExists = false): FileNode
+    public function file(string $path, bool $pathIsTrusted, bool $createIfNotExists = false): FileNode
     {
         $childPath = $this->childPathInfo($path, $pathIsTrusted);
         if ($createIfNotExists && $childPath->type === PathType::Missing) {
@@ -101,7 +105,26 @@ class DirectoryNode extends AbstractNode
      * @throws PathTypeException
      * @throws PermissionException
      */
-    public function getDirectory(string $path, bool $pathIsTrusted, bool $createIfNotExists = false): DirectoryNode
+    public function read(
+        string  $path,
+        bool    $pathIsTrusted,
+        int     $offset = 0,
+        ?int    $length = null,
+        ?Buffer $buffer = null
+    ): string
+    {
+        return (new FileNode($this->childPathInfo($path, $pathIsTrusted)))
+            ->read($offset, $length, $buffer);
+    }
+
+    /**
+     * @throws InvalidPathException
+     * @throws NodeOpException
+     * @throws PathNotFoundException
+     * @throws PathTypeException
+     * @throws PermissionException
+     */
+    public function directory(string $path, bool $pathIsTrusted, bool $createIfNotExists = false): DirectoryNode
     {
         $childPath = $this->childPathInfo($path, $pathIsTrusted);
         if ($createIfNotExists && $childPath->type === PathType::Missing) {
