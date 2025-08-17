@@ -15,4 +15,3 @@ namespace Charcoal\Filesystem\Exceptions;
 class FilesystemException extends \Exception
 {
 }
-

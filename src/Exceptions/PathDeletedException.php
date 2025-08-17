@@ -11,13 +11,13 @@ namespace Charcoal\Filesystem\Exceptions;
 use Charcoal\Filesystem\Node\PathInfo;
 
 /**
- * Class PathNotFoundException
+ * Class PathDeletedException
  * @package Charcoal\Filesystem\Exceptions
  */
-class PathNotFoundException extends FilesystemException
+class PathDeletedException extends \Exception
 {
-    public function __construct(public readonly PathInfo $path, string $message)
+    public function __construct(public readonly PathInfo $deleted)
     {
-        parent::__construct($message);
+        parent::__construct();
     }
 }

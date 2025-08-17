@@ -8,8 +8,8 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem;
 
-use Charcoal\Filesystem\Enums\FilesystemError;
-use Charcoal\Filesystem\Exceptions\FilesystemException;
+use Charcoal\Filesystem\Enums\PathContext;
+use Charcoal\Filesystem\Exceptions\InvalidPathException;
 
 /**
  * Class Filesystem
@@ -17,6 +17,20 @@ use Charcoal\Filesystem\Exceptions\FilesystemException;
  */
 class Filesystem
 {
+    /**
+     * @param string $path
+     * @param PathContext $context
+     * @return SafePath|null
+     */
+    public static function safePath(string $path, PathContext $context = PathContext::Unix): ?SafePath
+    {
+        try {
+            return SafePath::for($path, $context);
+        } catch (InvalidPathException) {
+            return null;
+        }
+    }
+
     /**
      * @param string|null $path
      * @return void
@@ -27,26 +41,11 @@ class Filesystem
     }
 
     /**
-     * @throws FilesystemException
+     * @param int $utf
+     * @param bool $littleEndian
+     * @return string
      */
-    public static function Chmod(string $mode, string $path): void
-    {
-        if (!preg_match('/^0[0-7]{3}$/', $mode)) {
-            throw new \InvalidArgumentException('Invalid chmod argument, expecting octal number as string');
-        }
-
-        if (!chmod($path, intval($mode, 8))) {
-            throw new FilesystemException(
-                FilesystemError::CHMOD_FAIL,
-                "Cannot change file/directory permissions"
-            );
-        }
-    }
-
-    /**
-     * Generates UTF byte order mark bytes while minding the endianness
-     */
-    public static function BOM_Bytes(int $utf, bool $littleEndian): string
+    public static function getBomBytes(int $utf, bool $littleEndian): string
     {
         return match ($utf) {
             8 => pack("C*", 0xEF, 0xBB, 0xBF),
@@ -58,20 +57,22 @@ class Filesystem
 
     /**
      * Pass few bytes (~4) from the beginning of a file to check if it contains UTF byte order mark
+     * @param string $sof
+     * @return int
      */
-    public static function Check_BOM(string $sof): int
+    public static function checkBom(string $sof): int
     {
-        if (substr($sof, 0, 3) === static::BOM_Bytes(8, false)) {
+        if (substr($sof, 0, 3) === static::getBomBytes(8, false)) {
             return 8;
         }
 
         $sof2 = substr($sof, 0, 2);
-        if ($sof2 === static::BOM_Bytes(16, true) || $sof2 === static::BOM_Bytes(16, false)) {
+        if ($sof2 === static::getBomBytes(16, true) || $sof2 === static::getBomBytes(16, false)) {
             return 16;
         }
 
         $sof4 = substr($sof, 0, 4);
-        if ($sof4 === static::BOM_Bytes(32, true) || $sof4 === static::BOM_Bytes(32, false)) {
+        if ($sof4 === static::getBomBytes(32, true) || $sof4 === static::getBomBytes(32, false)) {
             return 32;
         }
 
