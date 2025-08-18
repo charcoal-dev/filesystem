@@ -37,7 +37,7 @@ class FileNode extends AbstractNode
             throw new PathNotFoundException($this->path, "No such file exists at given path");
         }
 
-        if (!$path instanceof FilePath || $this->path->type !== PathType::File) {
+        if (!$path instanceof FilePath && $this->path->type !== PathType::File) {
             throw new PathTypeException($this->path,
                 "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
                 " object for " . $this->path->type->name);

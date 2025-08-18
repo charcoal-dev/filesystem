@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Path;
 
-use Charcoal\Base\Support\ErrorHelper;
+use Charcoal\Base\Support\Helpers\ErrorHelper;
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;

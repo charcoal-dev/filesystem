@@ -40,7 +40,7 @@ class DirectoryNode extends AbstractNode
             throw new PathNotFoundException($this->path, "No such directory exists at given path");
         }
 
-        if (!$path instanceof DirectoryPath || $this->path->type !== PathType::Directory) {
+        if (!$path instanceof DirectoryPath && $this->path->type !== PathType::Directory) {
             throw new PathTypeException($this->path,
                 "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
                 " object for " . $this->path->type->name);
