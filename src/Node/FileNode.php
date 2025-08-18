@@ -40,7 +40,7 @@ class FileNode extends AbstractNode
         if (!$path instanceof FilePath && $this->path->type !== PathType::File) {
             throw new PathTypeException($this->path,
                 "Cannot instantiate path as " . ObjectHelper::baseClassName(static::class) .
-                " object for " . $this->path->type->name);
+                " object for path of type " . $this->path->type->name);
         }
     }
 
