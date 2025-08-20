@@ -89,7 +89,7 @@ readonly class PathInfo
     {
         return SafePath::for($this->absolute . DIRECTORY_SEPARATOR .
             trim(implode(DIRECTORY_SEPARATOR, array_map("trim", $path)), "\\./"),
-            PathContext::Unix);
+            context: null);
     }
 
     /**
