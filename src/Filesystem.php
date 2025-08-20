@@ -52,6 +52,8 @@ class Filesystem
                 if (!$test) {
                     throw new PathAssertFailedException($path, "Assertion failed: " . $assertion->name);
                 }
+
+                $passed++;
             }
         }
 
