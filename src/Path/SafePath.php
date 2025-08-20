@@ -136,6 +136,16 @@ final readonly class SafePath
      */
     public function isFile(): FilePath
     {
-        return new FilePath($this->path);
+        return new FilePath($this);
+    }
+
+    /**
+     * @return DirectoryPath
+     * @throws InvalidPathException
+     * @throws \Charcoal\Filesystem\Exceptions\PathTypeException
+     */
+    public function isDirectory(): DirectoryPath
+    {
+        return new DirectoryPath($this);
     }
 }
