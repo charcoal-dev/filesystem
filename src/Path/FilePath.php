@@ -20,7 +20,8 @@ final readonly class FilePath extends PathInfo
 {
     /**
      * @param SafePath|string $path
-     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
+     * @throws PathTypeException
+     * @throws \Charcoal\Filesystem\Exceptions\InvalidPathException
      */
     public function __construct(SafePath|string $path)
     {
@@ -32,8 +33,8 @@ final readonly class FilePath extends PathInfo
 
     /**
      * @return FileNode
+     * @throws PathTypeException
      * @throws \Charcoal\Filesystem\Exceptions\PathNotFoundException
-     * @throws \Charcoal\Filesystem\Exceptions\PathTypeException
      */
     public function node(): FileNode
     {
