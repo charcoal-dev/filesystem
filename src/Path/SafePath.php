@@ -28,12 +28,16 @@ final readonly class SafePath
 
     /**
      * @param string $path
-     * @param PathContext $context
+     * @param PathContext|null $context
      * @return self
      * @throws InvalidPathException
      */
-    public static function for(string $path, PathContext $context = PathContext::Unix): self
+    public static function for(string $path, ?PathContext $context = PathContext::Unix): self
     {
+        if(is_null($context)) {
+            $context = DIRECTORY_SEPARATOR === "\\" ? PathContext::Windows : PathContext::Unix;
+        }
+
         // Normalize path separators, trim whitespaces
         $path = trim(str_replace("\\", "/", $path));
         if (!$path) {
