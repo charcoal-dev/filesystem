@@ -13,6 +13,7 @@ use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
 use Charcoal\Filesystem\Filesystem;
+use Charcoal\Filesystem\Traits\PathAssertionTrait;
 
 /**
  * Class PathInfo
@@ -20,6 +21,8 @@ use Charcoal\Filesystem\Filesystem;
  */
 readonly class PathInfo
 {
+    use PathAssertionTrait;
+
     public PathContext $context;
     public string $absolute;
     public bool $validated;
