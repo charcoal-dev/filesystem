@@ -81,6 +81,18 @@ readonly class PathInfo
     }
 
     /**
+     * @param string ...$path
+     * @return SafePath
+     * @throws InvalidPathException
+     */
+    public function join(string ...$path): SafePath
+    {
+        return SafePath::for($this->absolute . DIRECTORY_SEPARATOR .
+            trim(implode(DIRECTORY_SEPARATOR, array_map("trim", $path)), "\\./"),
+            PathContext::Unix);
+    }
+
+    /**
      * @param bool $clear_realpath_cache
      * @return void
      */
