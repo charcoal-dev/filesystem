@@ -129,4 +129,13 @@ final readonly class SafePath
         return preg_match("#^" . $regExp . "*$#", $normalized) === 1 ?
             $normalized : false;
     }
+
+    /**
+     * @return FilePath
+     * @throws \Charcoal\Filesystem\Exceptions\FilesystemException
+     */
+    public function isFile(): FilePath
+    {
+        return new FilePath($this->path);
+    }
 }
