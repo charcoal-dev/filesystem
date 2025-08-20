@@ -12,6 +12,8 @@ use Charcoal\Base\Support\Helpers\EnumHelper;
 use Charcoal\Filesystem\Enums\Assert;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\PathAssertFailedException;
+use Charcoal\Filesystem\Node\AbstractNode;
+use Charcoal\Filesystem\Path\PathInfo;
 
 /**
  * Trait PathAssertionTrait
@@ -26,21 +28,27 @@ trait PathAssertionTrait
      */
     public function assert(Assert ...$asserts): int
     {
+        $path = match (true) {
+            $this instanceof AbstractNode => $this->path,
+            $this instanceof PathInfo => $this,
+            default => throw new \InvalidArgumentException("Invalid path type"),
+        };
+
         $assertions = EnumHelper::filterUniqueFromSet(...$asserts);
         $passed = 0;
         if ($assertions) {
             foreach ($assertions as $assertion) {
                 $test = match ($assertion) {
-                    Assert::Exists => $this->type !== PathType::Missing,
-                    Assert::Readable => $this->readable,
-                    Assert::Writable => $this->writable,
-                    Assert::Executable => $this->executable,
-                    Assert::IsFile => $this->type === PathType::File,
-                    Assert::IsDirectory => $this->type === PathType::Directory,
+                    Assert::Exists => $path->type !== PathType::Missing,
+                    Assert::Readable => $path->readable,
+                    Assert::Writable => $path->writable,
+                    Assert::Executable => $path->executable,
+                    Assert::IsFile => $path->type === PathType::File,
+                    Assert::IsDirectory => $path->type === PathType::Directory,
                 };
 
                 if (!$test) {
-                    throw new PathAssertFailedException($this, "Assertion failed: " . $assertion->name);
+                    throw new PathAssertFailedException($path, "Assertion failed: " . $assertion->name);
                 }
             }
         }
