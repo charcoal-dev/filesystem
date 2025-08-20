@@ -26,6 +26,7 @@ use Charcoal\Filesystem\Path\SafePath;
 /**
  * Class DirectoryNode
  * @package Charcoal\Filesystem\Node
+ * @property-read DirectoryPath $path
  */
 class DirectoryNode extends AbstractNode
 {
