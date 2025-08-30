@@ -26,7 +26,8 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
     public function invalidPathExceptionToFalse(string $path, PathContext $context): bool
     {
         try {
-            SafePath::for($path, $context);
+            $for = SafePath::for($path, $context);
+            var_dump($for);
             return true;
         } catch (InvalidPathException) {
             return false;
@@ -46,7 +47,7 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("var/log", SafePath::for("var/log/", $context)->path, "trailing slash removed");
         $this->assertEquals("foo/bar", SafePath::for("foo//bar", $context)->path, "collapses multiple slashes");
         $this->assertEquals(".env", SafePath::for(".env", $context)->path, "dotfile allowed");
-        $this->assertFalse($this->invalidPathExceptionToFalse("./var/log", $context), "dot segment rejected");
+        $this->assertEquals("var/log", SafePath::for("./var/log", $context)->path, "dot segment normalized");
         $this->assertFalse($this->invalidPathExceptionToFalse("../var/log", $context), "parent traversal rejected");
 
         // Windows & Scheme given Unix context (should reject)
@@ -78,8 +79,7 @@ class SafePathTest extends \PHPUnit\Framework\TestCase
             "unix root rejected in windows context");
         $this->assertFalse($this->invalidPathExceptionToFalse("C:", $context),
             "drive without slash rejected");
-        $this->assertFalse($this->invalidPathExceptionToFalse("./foo", $context),
-            "dot segment rejected");
+        $this->assertEquals("foo", $this->invalidPathExceptionToFalse("./foo", $context), "dot+dir start normalized");
         $this->assertFalse($this->invalidPathExceptionToFalse("../foo", $context),
             "parent traversal rejected");
         $this->assertFalse($this->invalidPathExceptionToFalse("file:///C:/Windows/System32", $context),
