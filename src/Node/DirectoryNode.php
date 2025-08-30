@@ -58,7 +58,7 @@ class DirectoryNode extends AbstractNode
         }
 
         if (!$pathIsTrusted) {
-            $safePath = SafePath::for($path, $this->path->context);
+            $safePath = SafePath::for(ltrim($path, "/\\"), $this->path->context);
             if ($safePath->absolute) {
                 throw new InvalidPathException($safePath->path,
                     "Cannot create directories; Target path not relative to this directory");
