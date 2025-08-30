@@ -41,7 +41,6 @@ final readonly class SafePath
         // Normalize path separators, trim whitespaces
         $path = trim(str_replace("\\", "/", $path));
         if (str_starts_with($path, "./")) {
-            var_dump($path);
             $path = substr($path, 2);
         }
 
