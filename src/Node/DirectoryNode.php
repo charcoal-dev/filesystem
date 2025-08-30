@@ -57,8 +57,9 @@ class DirectoryNode extends AbstractNode
             throw new InvalidPathException($path, "Relative path to child cannot be empty");
         }
 
+        $path = ltrim($path, "/\\");
         if (!$pathIsTrusted) {
-            $safePath = SafePath::for(ltrim($path, "/\\"), $this->path->context);
+            $safePath = SafePath::for($path, $this->path->context);
             if ($safePath->absolute) {
                 throw new InvalidPathException($safePath->path,
                     "Cannot create directories; Target path not relative to this directory");
