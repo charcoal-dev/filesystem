@@ -13,8 +13,8 @@ use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Node\FileNode;
 
 /**
- * Class FilePath
- * @package Charcoal\Filesystem\Path
+ * A class representing a file path, extending functionality provided by PathInfo.
+ * Ensures the provided path is of type File and provides access to associated file system node.
  */
 final readonly class FilePath extends PathInfo
 {

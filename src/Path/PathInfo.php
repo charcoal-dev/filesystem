@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Path;
 
-use Charcoal\Base\Support\Helpers\ErrorHelper;
+use Charcoal\Base\Support\ErrorHelper;
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
@@ -16,8 +16,9 @@ use Charcoal\Filesystem\Filesystem;
 use Charcoal\Filesystem\Traits\PathAssertionTrait;
 
 /**
- * Class PathInfo
- * @package Charcoal\Filesystem\Path
+ * This class represents information about a filesystem path with properties
+ * for determining its context, validity, type, and permissions. It provides
+ * utility methods to interact with the path.
  */
 readonly class PathInfo
 {

@@ -12,8 +12,8 @@ use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
 
 /**
- * Class SafePath
- * @package Charcoal\Filesystem\Path
+ * Represents a safe and normalized file system path, providing functionalities
+ * for validating, constructing, and managing path context and structure.
  */
 final readonly class SafePath
 {
