@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Node;
 
-use Charcoal\Base\Support\Helpers\ObjectHelper;
+use Charcoal\Base\Objects\ObjectHelper;
 use Charcoal\Buffers\Buffer;
+use Charcoal\Contracts\Storage\Enums\StorageType;
+use Charcoal\Contracts\Storage\StorageProviderInterface;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\FilesystemException;
 use Charcoal\Filesystem\Exceptions\InvalidPathException;
@@ -24,11 +26,12 @@ use Charcoal\Filesystem\Path\PathInfo;
 use Charcoal\Filesystem\Path\SafePath;
 
 /**
- * Class DirectoryNode
- * @package Charcoal\Filesystem\Node
- * @property-read DirectoryPath $path
+ * Represents a directory node in the filesystem, providing functionality
+ * to interact with and manipulate directory paths and their children.
+ * Extends functionality from AbstractNode and ensures safe operations
+ * on directory structures.
  */
-class DirectoryNode extends AbstractNode
+class DirectoryNode extends AbstractNode implements StorageProviderInterface
 {
     /**
      * @throws PathNotFoundException
@@ -402,5 +405,21 @@ class DirectoryNode extends AbstractNode
         }
 
         return $bytes;
+    }
+
+    /**
+     * @return StorageType
+     */
+    public function storageType(): StorageType
+    {
+        return StorageType::Filesystem;
+    }
+
+    /**
+     * @return string
+     */
+    public function storageProviderId(): string
+    {
+        return $this->path->absolute;
     }
 }

@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace Charcoal\Filesystem\Enums;
 
 /**
- * Class PathContext
- * @package Charcoal\Filesystem\Enums
+ * Represents the context of a file path, allowing differentiation
+ * between Unix, Windows, and Scheme-based paths.
  */
 enum PathContext
 {

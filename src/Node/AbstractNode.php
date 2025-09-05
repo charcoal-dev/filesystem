@@ -14,8 +14,7 @@ use Charcoal\Filesystem\Path\PathInfo;
 use Charcoal\Filesystem\Stats\PathStats;
 
 /**
- * Class AbstractNode
- * @package Charcoal\Filesystem\Node
+ * Abstract base class representing a filesystem node.
  */
 abstract class AbstractNode
 {

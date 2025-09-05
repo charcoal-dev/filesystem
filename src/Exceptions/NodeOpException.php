@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Exceptions;
 
-use Charcoal\Base\Support\Helpers\ErrorHelper;
+use Charcoal\Base\Support\ErrorHelper;
 use Charcoal\Filesystem\Node\AbstractNode;
 
 /**

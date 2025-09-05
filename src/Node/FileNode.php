@@ -8,9 +8,9 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Node;
 
-use Charcoal\Base\Support\Helpers\ObjectHelper;
-use Charcoal\Buffers\AbstractByteArray;
+use Charcoal\Base\Objects\ObjectHelper;
 use Charcoal\Buffers\Buffer;
+use Charcoal\Contracts\Buffers\ReadableBufferInterface;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\NodeOpException;
 use Charcoal\Filesystem\Exceptions\PathDeletedException;
@@ -21,8 +21,8 @@ use Charcoal\Filesystem\Path\FilePath;
 use Charcoal\Filesystem\Path\PathInfo;
 
 /**
- * Class File
- * @package Charcoal\Filesystem
+ * Represents a file node in a filesystem tree. Allows operations such as reading,
+ * writing, or deleting a file.
  */
 class FileNode extends AbstractNode
 {
@@ -96,7 +96,7 @@ class FileNode extends AbstractNode
      * @throws NodeOpException
      * @throws PermissionException
      */
-    public function write(string|AbstractByteArray $buffer, bool $append, bool $lock): static
+    public function write(string|ReadableBufferInterface $buffer, bool $append, bool $lock): static
     {
         if (!$this->path->writable) {
             throw new PermissionException($this, "File is not writable");
@@ -105,7 +105,7 @@ class FileNode extends AbstractNode
         $flags = ($append ? FILE_APPEND : 0) | ($lock ? LOCK_EX : 0);
         error_clear_last();
         $len = @file_put_contents($this->path->absolute,
-            $buffer instanceof AbstractByteArray ? $buffer->raw() : $buffer, $flags);
+            $buffer instanceof ReadableBufferInterface ? $buffer->bytes() : $buffer, $flags);
         if (!is_int($len)) {
             throw new NodeOpException($this, "Write file op failed", captureLastError: true);
         }

@@ -9,8 +9,9 @@ declare(strict_types=1);
 namespace Charcoal\Filesystem\Enums;
 
 /**
- * Class PathType
- * @package Charcoal\Filesystem
+ * This enumeration is used to identify the specific type of given
+ * filesystem path. The types include files, directories, symbolic
+ * links, missing paths, and others that do not fall into standard categories.
  */
 enum PathType
 {
