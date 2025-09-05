@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem;
 
-use Charcoal\Base\Support\Helpers\EnumHelper;
+use Charcoal\Base\Enums\EnumHelper;
 use Charcoal\Filesystem\Enums\Assert;
 use Charcoal\Filesystem\Enums\PathContext;
 use Charcoal\Filesystem\Enums\PathType;

@@ -13,8 +13,7 @@ use Charcoal\Filesystem\Exceptions\PathAssertFailedException;
 use Charcoal\Filesystem\Filesystem;
 
 /**
- * Trait PathAssertionTrait
- * @package Charcoal\Filesystem\Traits
+ * Provides assertion functionality for filesystem paths.
  */
 trait PathAssertionTrait
 {

@@ -13,8 +13,8 @@ use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Path\PathInfo;
 
 /**
- * Class PathStats
- * @package Charcoal\Filesystem\Stats
+ * Represents the metadata and statistics for a given file system path.
+ * This includes user and group ownership, time attributes, and size information.
  */
 final readonly class PathStats
 {
