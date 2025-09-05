@@ -46,7 +46,7 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         $childDir = $dir->directory("test-dir", false);
         $buffer = new Buffer();
         $childDir->read("some-file-3", true, buffer: $buffer);
-        $this->assertEquals("this is a third test file", $buffer->raw());
+        $this->assertEquals("this is a third test file", $buffer->bytes());
     }
 
     /**
@@ -115,7 +115,7 @@ class DirectoryNodeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("this is a test file", $dir->read("some-file-1", true));
         $buffer = new Buffer();
         $dir->read("some-file-2", true, buffer: $buffer);
-        $this->assertEquals(25, $buffer->len());
+        $this->assertEquals(25, $buffer->length());
     }
 
     /**

@@ -28,7 +28,7 @@ class FileNodeTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(" is a ", $file->read(4, 6));
         $this->assertEquals("test file", $file->read(10));
         $this->assertEquals("this is a test file", $file->read());
-        $this->assertEquals(19, $file->readToBuffer()->len());
+        $this->assertEquals(19, $file->readToBuffer()->length());
     }
 
     /**
