@@ -8,15 +8,17 @@ declare(strict_types=1);
 
 namespace Charcoal\Filesystem\Path;
 
+use Charcoal\Contracts\Storage\Enums\StorageType;
+use Charcoal\Contracts\Storage\StorageProviderInterface;
 use Charcoal\Filesystem\Enums\PathType;
 use Charcoal\Filesystem\Exceptions\PathTypeException;
 use Charcoal\Filesystem\Node\DirectoryNode;
 
 /**
- * Class DirectoryPath
- * @package Charcoal\Filesystem\Path
+ * Represents a directory path in the filesystem. This class ensures that the provided path is of type Directory.
+ * Extends functionality provided by PathInfo to specifically handle directory paths.
  */
-final readonly class DirectoryPath extends PathInfo
+final readonly class DirectoryPath extends PathInfo implements StorageProviderInterface
 {
     /**
      * @param SafePath|string $path
@@ -41,4 +43,19 @@ final readonly class DirectoryPath extends PathInfo
         return new DirectoryNode($this);
     }
 
+    /**
+     * @return StorageType
+     */
+    public function storageType(): StorageType
+    {
+        return StorageType::Filesystem;
+    }
+
+    /**
+     * @return string
+     */
+    public function storageProviderId(): string
+    {
+        return $this->absolute;
+    }
 }
