@@ -43,6 +43,7 @@ final class FileLock implements SemaphoreLockInterface
      * @param string $lockId must match regex: /^\w+$/
      * @param float|null $concurrentCheckEvery
      * @param int $concurrentTimeout
+     * @param string|null $namespace
      * @throws SemaphoreLockException
      */
     public function __construct(
@@ -50,14 +51,23 @@ final class FileLock implements SemaphoreLockInterface
         public readonly string             $lockId,
         public readonly ?float             $concurrentCheckEvery = null,
         public readonly int                $concurrentTimeout = 0,
+        public readonly ?string            $namespace = null
     )
     {
         if (!preg_match('/^\w+$/', $lockId)) {
             throw new \InvalidArgumentException('Invalid resource identifier for semaphore emulator');
         }
 
-        $this->lockFilepath = $this->directory->path->absolute . DIRECTORY_SEPARATOR .
-            $lockId . ".lock";
+        $pathPrefix = $this->directory->path->absolute . DIRECTORY_SEPARATOR;
+        if ($this->namespace) {
+            if (!preg_match('/^\w+$/', $this->namespace)) {
+                throw new \InvalidArgumentException("Invalid semaphore lock namespace");
+            }
+
+            $pathPrefix .= $this->namespace . DIRECTORY_SEPARATOR;
+        }
+
+        $this->lockFilepath = $pathPrefix . $lockId . ".lock";
 
         error_clear_last();
         $fp = @fopen($this->lockFilepath, "c+");
@@ -200,5 +210,13 @@ final class FileLock implements SemaphoreLockInterface
     public function lockId(): string
     {
         return $this->lockId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function namespace(): ?string
+    {
+        return $this->namespace;
     }
 }
