@@ -49,16 +49,18 @@ readonly class SemaphoreDirectory implements SemaphoreProviderInterface, Storage
      * @param string $lockId
      * @param float|null $concurrentCheckEvery
      * @param int $concurrentTimeout
+     * @param string|null $namespace
      * @return FileLock
      * @throws SemaphoreLockException
      */
     public function obtainLock(
-        string $lockId,
-        ?float $concurrentCheckEvery = null,
-        int    $concurrentTimeout = 0
+        string  $lockId,
+        ?float  $concurrentCheckEvery = null,
+        int     $concurrentTimeout = 0,
+        ?string $namespace = null
     ): FileLock
     {
-        return new FileLock($this, $lockId, $concurrentCheckEvery, $concurrentTimeout);
+        return new FileLock($this, $lockId, $concurrentCheckEvery, $concurrentTimeout, $namespace);
     }
 
     /**

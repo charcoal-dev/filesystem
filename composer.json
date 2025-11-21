@@ -16,7 +16,7 @@
     "php": "^8.3",
     "charcoal-dev/base": "^0.2.0",
     "charcoal-dev/buffers": "^0.2.4",
-    "charcoal-dev/semaphore": "^0.2.8",
+    "charcoal-dev/semaphore": "^0.2.9",
     "charcoal-dev/contracts-storage": "^0.1.1"
   },
   "autoload": {
